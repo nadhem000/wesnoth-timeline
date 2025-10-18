@@ -28,6 +28,9 @@ const translations_ar = {
 	"filter_umc": "UMC",
 	"filter_mainline_non_canon": "الرئيسية غير الكانونية",
 	"filter_universe_wesnoth": "ويزنوث",
+	"meta_category": "الفئة",
+	"meta_universe": "الكون", 
+	"meta_campaigns": "الحملات",
 	
 	// Campaign names
 	"campaign_the_rise_of_wesnoth": "صعود ويزنوث",

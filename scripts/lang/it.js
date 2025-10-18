@@ -28,6 +28,9 @@ const translations_it = {
 	"filter_umc": "UMC",
 	"filter_mainline_non_canon": "Principale non canon",
 	"filter_universe_wesnoth": "Wesnoth",
+	"meta_category": "Categoria",
+	"meta_universe": "Universo",
+	"meta_campaigns": "Campagne",
 	
 	// Campaign names
 	"campaign_the_rise_of_wesnoth": "L'Ascesa di Wesnoth",

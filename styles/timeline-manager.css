@@ -826,3 +826,49 @@ transition: all 0.3s ease;
     min-width: 44px;
   }
 }
+
+.WTL-timeline-manager-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--WTL-timeline-manager-border-color);
+    font-size: 0.8rem;
+}
+
+.WTL-timeline-manager-meta-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: var(--WTL-timeline-manager-bg-color);
+    border-radius: 12px;
+    border: 1px solid var(--WTL-timeline-manager-border-color);
+    color: var(--WTL-timeline-manager-text-color);
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.WTL-timeline-manager-meta-label {
+    font-weight: 600;
+    margin-right: 4px;
+    opacity: 0.8;
+}
+
+/* Dark mode adjustments for meta items */
+.WTL-timeline-manager-dark-mode .WTL-timeline-manager-meta-item {
+    background: var(--WTL-timeline-manager-hover-color);
+    border-color: var(--WTL-timeline-manager-border-color);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .WTL-timeline-manager-meta {
+        gap: 6px;
+    }
+    
+    .WTL-timeline-manager-meta-item {
+        font-size: 0.7rem;
+        padding: 3px 6px;
+    }
+}

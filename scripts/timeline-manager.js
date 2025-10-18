@@ -309,6 +309,10 @@ function generateTimeline() {
         // Use translated description with proper HTML structure
         const description = getTranslatedDescription(translationKey, item.description);
         
+        // Get translated meta information
+        const translatedCategory = getTranslatedCategory(item.category);
+        const translatedUniverse = getTranslatedUniverse(item.univers);
+        
         timelineItem.innerHTML = `
             <div class="WTL-timeline-manager-timeline-marker">
                 <i class="fas ${item.icon}"></i>
@@ -318,10 +322,16 @@ function generateTimeline() {
                 <div class="WTL-timeline-manager-title">${title}</div>
                 <div class="WTL-timeline-manager-description">${description}</div>
                 <div class="WTL-timeline-manager-meta">
-                    <span class="WTL-timeline-manager-meta-item">Catégorie: ${item.category}</span>
-                    <span class="WTL-timeline-manager-meta-item">Univers: ${item.univers}</span>
+                    <span class="WTL-timeline-manager-meta-item">
+                        <span class="WTL-timeline-manager-meta-label" data-i18n="meta_category">Category</span>: ${translatedCategory}
+                    </span>
+                    <span class="WTL-timeline-manager-meta-item">
+                        <span class="WTL-timeline-manager-meta-label" data-i18n="meta_universe">Universe</span>: ${translatedUniverse}
+                    </span>
                     ${item.related_campaign_events && item.related_campaign_events !== 'aucune' ? 
-                        `<span class="WTL-timeline-manager-meta-item">Campagnes: ${Array.isArray(item.related_campaign_events) ? item.related_campaign_events.join(', ') : item.related_campaign_events}</span>` : 
+                        `<span class="WTL-timeline-manager-meta-item">
+                            <span class="WTL-timeline-manager-meta-label" data-i18n="meta_campaigns">Campaigns</span>: ${Array.isArray(item.related_campaign_events) ? item.related_campaign_events.join(', ') : item.related_campaign_events}
+                        </span>` : 
                         ''
                     }
                 </div>
@@ -330,6 +340,9 @@ function generateTimeline() {
         
         timeline.appendChild(timelineItem);
     });
+    
+    // Apply translations to meta labels
+    applyTranslations();
     
     // Animation d'apparition progressive
     const timelineItems = document.querySelectorAll('.WTL-timeline-manager-timeline-item');
@@ -573,6 +586,29 @@ function addHighlightEventListeners() {
     
     highlightListenersAdded = true;
     console.log('Highlight event listeners added successfully!');
+}
+function getTranslatedCategory(category) {
+    const mapping = {
+        'mainline': 'filter_mainline',
+        'umc': 'filter_umc', 
+        'mainline uncannon': 'filter_mainline_non_canon',
+        'other': 'filter_other'
+    };
+    const key = mapping[category] || 'filter_other';
+    return translations[currentLanguage] && translations[currentLanguage][key] 
+        ? translations[currentLanguage][key] 
+        : category;
+}
+
+function getTranslatedUniverse(universe) {
+    const mapping = {
+        'wesnoth': 'filter_universe_wesnoth',
+        'other': 'filter_other'
+    };
+    const key = mapping[universe] || 'filter_other';
+    return translations[currentLanguage] && translations[currentLanguage][key] 
+        ? translations[currentLanguage][key] 
+        : universe;
 }
 
 // Make functions globally accessible

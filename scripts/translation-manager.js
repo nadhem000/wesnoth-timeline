@@ -24,6 +24,10 @@ function applyTranslations() {
             if (element.classList.contains('WTL-timeline-manager-era-description')) {
                 element.innerHTML = translations[currentLanguage][key];
             } 
+            // For meta labels, update text content normally
+            else if (element.classList.contains('WTL-timeline-manager-meta-label')) {
+                element.textContent = translations[currentLanguage][key];
+            }
             // For filter spans, update the text content
             else if (element.tagName === 'SPAN' && element.closest('.WTL-timeline-manager-checkbox-group')) {
                 element.textContent = translations[currentLanguage][key];
