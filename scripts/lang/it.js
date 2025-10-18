@@ -6,7 +6,7 @@ const translations_it = {
 	"theme_label": "Tema:",
 	"theme_light": "Chiaro",
 	"theme_dark": "Scuro",
-	"footer_text": "Cronologia di Wesnoth &copy; 2023 - Basata sulla storia ufficiale di Battle for Wesnoth",
+	"footer_text": "Cronologia di Wesnoth &copy; 2025 - Basata sulla storia ufficiale di Battle for Wesnoth",
 	"keywords_title": "Filtra per parole chiave",
 	"reset_highlights": "Reimposta evidenziazioni",
 	"toggle_all": "Mostra/Nascondi tutto",

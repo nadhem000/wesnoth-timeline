@@ -6,7 +6,7 @@ const translations_en = {
 	"theme_label": "Theme:",
 	"theme_light": "Light",
 	"theme_dark": "Dark",
-	"footer_text": "Wesnoth Timeline &copy; 2023 - Based on the official history of Battle for Wesnoth",
+	"footer_text": "Wesnoth Timeline &copy; 2025 - Based on the official history of Battle for Wesnoth",
 	"keywords_title": "Filter by keywords",
 	"reset_highlights": "Reset highlights",
 	"toggle_all": "Show/Hide all",

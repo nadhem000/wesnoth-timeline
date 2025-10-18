@@ -6,7 +6,7 @@ const translations_ar = {
 	"theme_label": "السمة:",
 	"theme_light": "فاتح",
 	"theme_dark": "غامق",
-	"footer_text": "الخط الزمني لويزنوث &copy; 2023 - مبني على التاريخ الرسمي لمعركة ويزنوث",
+	"footer_text": "الخط الزمني لويزنوث &copy; 2025 - مبني على التاريخ الرسمي لمعركة ويزنوث",
 	"keywords_title": "تصفية حسب الكلمات المفتاحية",
 	"reset_highlights": "إعادة تعليم التمييز",
 	"toggle_all": "إظهار/إخفاء الكل",

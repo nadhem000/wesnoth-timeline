@@ -73,7 +73,7 @@
 			"src": "/assets/screenshots/pwa-screenshots/screenshot-desktop.png",
 			"sizes": "1280x720",
 			"type": "image/png",
-			"platform": "narrow",
+			"form_factor": "narrow",
 			"label": "Wesnoth Timeline desktop view"
 		},
 		{
