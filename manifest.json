@@ -73,14 +73,14 @@
 			"src": "/assets/screenshots/pwa-screenshots/screenshot-desktop.png",
 			"sizes": "1280x720",
 			"type": "image/png",
-			"platform": "wide",
+			"platform": "narrow",
 			"label": "Wesnoth Timeline desktop view"
 		},
 		{
 			"src": "/assets/screenshots/pwa-screenshots/screenshot-mobile.png",
 			"sizes": "375x667",
 			"type": "image/png",
-			"platform": "narrow",
+			"form_factor": "wide",
 			"label": "Wesnoth Timeline mobile view"
 		}
 	]
