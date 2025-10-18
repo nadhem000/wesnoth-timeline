@@ -1,0 +1,828 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+	--WTL-timeline-manager-primary-color: #4a7b5d;
+	--WTL-timeline-manager-secondary-color: #8a6d3b;
+	--WTL-timeline-manager-accent-color: #d4af37;
+	--WTL-timeline-manager-text-color: #333;
+	--WTL-timeline-manager-bg-color: #f5f5f5;
+	--WTL-timeline-manager-card-bg: #ffffff;
+	--WTL-timeline-manager-timeline-color: #4a7b5d;
+	--WTL-timeline-manager-border-color: #ddd;
+	--WTL-timeline-manager-hover-color: #f0f0f0;
+}
+
+.WTL-timeline-manager-dark-mode {
+	--WTL-timeline-manager-primary-color: #6b8e23;
+	--WTL-timeline-manager-secondary-color: #b8860b;
+	--WTL-timeline-manager-accent-color: #daa520;
+	--WTL-timeline-manager-text-color: #e0e0e0;
+	--WTL-timeline-manager-bg-color: #1a1a1a;
+	--WTL-timeline-manager-card-bg: #2d2d2d;
+	--WTL-timeline-manager-timeline-color: #6b8e23;
+	--WTL-timeline-manager-border-color: #444;
+	--WTL-timeline-manager-hover-color: #3a3a3a;
+}
+
+body {
+	background-color: var(--WTL-timeline-manager-bg-color);
+	color: var(--WTL-timeline-manager-text-color);
+	min-height: 100vh;
+	padding: 20px;
+	transition: all 0.3s ease;
+}
+
+.WTL-timeline-manager-container {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.WTL-timeline-manager-header {
+	text-align: center;
+	margin-bottom: 40px;
+	padding: 20px;
+	border-bottom: 1px solid var(--WTL-timeline-manager-border-color);
+}
+
+.WTL-timeline-manager-h1 {
+	font-size: 2.5rem;
+	color: var(--WTL-timeline-manager-primary-color);
+	margin-bottom: 10px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.WTL-timeline-manager-subtitle {
+	font-size: 1.2rem;
+	color: var(--WTL-timeline-manager-secondary-color);
+	margin-bottom: 20px;
+}
+
+.WTL-timeline-manager-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+	flex-wrap: wrap;
+	gap: 15px;
+}
+
+.WTL-timeline-manager-language-selector, .WTL-timeline-manager-theme-selector {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.WTL-timeline-manager-select, .WTL-timeline-manager-button {
+	padding: 10px 15px;
+	background: var(--WTL-timeline-manager-card-bg);
+	color: var(--WTL-timeline-manager-text-color);
+	border: 1px solid var(--WTL-timeline-manager-border-color);
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.WTL-timeline-manager-select:hover, .WTL-timeline-manager-button:hover {
+	background: var(--WTL-timeline-manager-hover-color);
+}
+
+.WTL-timeline-manager-theme-toggle {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.WTL-timeline-manager-switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+}
+
+.WTL-timeline-manager-switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.WTL-timeline-manager-slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: .4s;
+	border-radius: 34px;
+}
+
+.WTL-timeline-manager-slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	transition: .4s;
+	border-radius: 50%;
+}
+
+input:checked + .WTL-timeline-manager-slider {
+	background-color: var(--WTL-timeline-manager-primary-color);
+}
+
+input:checked + .WTL-timeline-manager-slider:before {
+	transform: translateX(26px);
+}
+
+.WTL-timeline-manager-timeline {
+	position: relative;
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.WTL-timeline-manager-timeline::after {
+	content: '';
+	position: absolute;
+	width: 6px;
+	background: linear-gradient(to bottom, var(--WTL-timeline-manager-primary-color), var(--WTL-timeline-manager-secondary-color));
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	margin-left: -3px;
+	border-radius: 10px;
+}
+
+.WTL-timeline-manager-timeline-item {
+	padding: 10px 40px;
+	position: relative;
+	width: 50%;
+	transform: translateY(20px);
+	transition: all 0.5s ease;
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+.WTL-timeline-manager-timeline-item.WTL-timeline-manager-visible {
+	transform: translateY(0);
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+.WTL-timeline-manager-timeline-item:nth-child(even) {
+	left: 0;
+}
+
+.WTL-timeline-manager-timeline-item:nth-child(odd) {
+	left: 50%;
+}
+
+.WTL-timeline-manager-timeline-content {
+	padding: 20px 30px;
+	background: var(--WTL-timeline-manager-card-bg);
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+	border-left: 4px solid var(--WTL-timeline-manager-primary-color);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.WTL-timeline-manager-timeline-item:nth-child(odd) .WTL-timeline-manager-timeline-content {
+	border-left: none;
+	border-right: 4px solid var(--WTL-timeline-manager-secondary-color);
+}
+
+.WTL-timeline-manager-timeline-content:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.WTL-timeline-manager-year {
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: var(--WTL-timeline-manager-primary-color);
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.WTL-timeline-manager-timeline-item:nth-child(odd) .WTL-timeline-manager-year {
+	color: var(--WTL-timeline-manager-secondary-color);
+}
+
+.WTL-timeline-manager-year i {
+	margin-right: 10px;
+	font-size: 1.2rem;
+}
+
+.WTL-timeline-manager-title {
+	font-size: 1.3rem;
+	font-weight: bold;
+	margin-bottom: 15px;
+	color: var(--WTL-timeline-manager-accent-color);
+}
+
+.WTL-timeline-manager-description {
+	line-height: 1.6;
+	color: var(--WTL-timeline-manager-text-color);
+}
+
+.WTL-timeline-manager-timeline-marker {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: var(--WTL-timeline-manager-primary-color);
+	top: 15px;
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-size: 0.8rem;
+}
+
+.WTL-timeline-manager-timeline-item:nth-child(even) .WTL-timeline-manager-timeline-marker {
+	right: -10px;
+}
+
+.WTL-timeline-manager-timeline-item:nth-child(odd) .WTL-timeline-manager-timeline-marker {
+	left: -10px;
+}
+
+.WTL-timeline-manager-timeline-item:nth-child(odd) .WTL-timeline-manager-timeline-marker {
+	background: var(--WTL-timeline-manager-secondary-color);
+}
+
+.WTL-timeline-manager-era-section {
+	margin-bottom: 40px;
+	padding: 20px;
+	background: var(--WTL-timeline-manager-card-bg);
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.WTL-timeline-manager-era-title {
+	font-size: 1.8rem;
+	color: var(--WTL-timeline-manager-primary-color);
+	margin-bottom: 15px;
+	text-align: center;
+	border-bottom: 2px solid var(--WTL-timeline-manager-border-color);
+	padding-bottom: 10px;
+}
+
+.WTL-timeline-manager-era-description {
+	line-height: 1.6;
+	margin-bottom: 20px;
+	text-align: justify;
+}
+
+.WTL-timeline-manager-footer {
+	text-align: center;
+	margin-top: 50px;
+	padding: 20px;
+	color: var(--WTL-timeline-manager-secondary-color);
+	font-size: 0.9rem;
+	border-top: 1px solid var(--WTL-timeline-manager-border-color);
+}
+
+@media screen and (max-width: 768px) {
+	.WTL-timeline-manager-timeline::after {
+		left: 31px;
+	}
+	
+	.WTL-timeline-manager-timeline-item {
+		width: 100%;
+		padding-left: 70px;
+		padding-right: 25px;
+	}
+	
+	.WTL-timeline-manager-timeline-item:nth-child(odd) {
+		left: 0;
+	}
+	
+	.WTL-timeline-manager-timeline-item:nth-child(even) .WTL-timeline-manager-timeline-marker,
+	.WTL-timeline-manager-timeline-item:nth-child(odd) .WTL-timeline-manager-timeline-marker {
+		left: 21px;
+	}
+	
+	.WTL-timeline-manager-timeline-content {
+		border-left: 4px solid var(--WTL-timeline-manager-primary-color) !important;
+		border-right: none !important;
+	}
+	
+	.WTL-timeline-manager-controls {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+/* Nouveaux styles pour la fonctionnalité de filtrage */
+.WTL-timeline-manager-keywords-section {
+	margin-bottom: 30px;
+	padding: 20px;
+	background: var(--WTL-timeline-manager-card-bg);
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.WTL-timeline-manager-keywords-title {
+	font-size: 1.3rem;
+	color: var(--WTL-timeline-manager-primary-color);
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.WTL-timeline-manager-keywords-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin-bottom: 15px;
+}
+
+.WTL-timeline-manager-keyword {
+	padding: 8px 15px;
+	background: var(--WTL-timeline-manager-bg-color);
+	color: var(--WTL-timeline-manager-text-color);
+	border: 1px solid var(--WTL-timeline-manager-border-color);
+	border-radius: 20px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	font-size: 0.9rem;
+}
+
+.WTL-timeline-manager-keyword:hover {
+	background: var(--WTL-timeline-manager-hover-color);
+	transform: translateY(-2px);
+}
+.WTL-timeline-manager-keyword.WTL-timeline-manager-active {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.WTL-timeline-manager-person, .WTL-timeline-manager-place, .WTL-timeline-manager-faction {
+	cursor: pointer;
+	padding: 2px 5px;
+	border-radius: 3px;
+	transition: all 0.2s ease;
+	display: inline-block;
+	margin: 2px;
+}
+
+.WTL-timeline-manager-person {
+	background: rgba(74, 123, 93, 0.2);
+	color: var(--WTL-timeline-manager-primary-color);
+}
+
+.WTL-timeline-manager-place {
+	background: rgba(138, 109, 59, 0.2);
+	color: var(--WTL-timeline-manager-secondary-color);
+}
+
+.WTL-timeline-manager-faction {
+	background: rgba(212, 175, 55, 0.2);
+	color: var(--WTL-timeline-manager-accent-color);
+}
+
+.WTL-timeline-manager-person:hover, .WTL-timeline-manager-place:hover, .WTL-timeline-manager-faction:hover {
+	transform: scale(1.05);
+}
+
+.WTL-timeline-manager-person.WTL-timeline-manager-highlighted, .WTL-timeline-manager-place.WTL-timeline-manager-highlighted, .WTL-timeline-manager-faction.WTL-timeline-manager-highlighted {
+	background: #e84393;
+	color: white;
+	box-shadow: 0 0 10px rgba(232, 67, 147, 0.7);
+}
+
+.WTL-timeline-manager-timeline-item.WTL-timeline-manager-highlighted .WTL-timeline-manager-timeline-content {
+	background: rgba(50, 40, 60, 0.9);
+	box-shadow: 0 5px 15px rgba(232, 67, 147, 0.4);
+}
+
+.WTL-timeline-manager-filter-controls {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+	gap: 15px;
+	flex-wrap: wrap;
+}
+
+.WTL-timeline-manager-filter-btn {
+	padding: 10px 20px;
+	background: var(--WTL-timeline-manager-card-bg);
+	color: var(--WTL-timeline-manager-text-color);
+	border: 1px solid var(--WTL-timeline-manager-border-color);
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.WTL-timeline-manager-filter-btn:hover {
+	background: var(--WTL-timeline-manager-hover-color);
+}
+
+.WTL-timeline-manager-filter-btn.WTL-timeline-manager-active {
+	background: var(--WTL-timeline-manager-primary-color);
+	color: white;
+	border-color: var(--WTL-timeline-manager-primary-color);
+}
+/* Highlight styles */
+.WTL-timeline-manager-person.WTL-timeline-manager-highlighted,
+.WTL-timeline-manager-place.WTL-timeline-manager-highlighted,
+.WTL-timeline-manager-faction.WTL-timeline-manager-highlighted {
+    background-color: #FFEB3B !important;
+    color: #333 !important;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-shadow: none;
+    box-shadow: 0 0 8px rgba(255, 235, 59, 0.8);
+}
+
+.WTL-timeline-manager-timeline-item.WTL-timeline-manager-highlighted {
+    border: 2px solid #4CAF50 !important;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.4) !important;
+    transform: scale(1.02);
+transition: all 0.3s ease;
+}
+.WTL-timeline-manager-timeline-item:not(.WTL-timeline-manager-highlighted):not(.WTL-timeline-manager-visible) {
+    display: none !important;
+}
+
+.WTL-timeline-manager-person,
+.WTL-timeline-manager-place,
+.WTL-timeline-manager-faction {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 1px 4px;
+    border-radius: 3px;
+    border-bottom: 1px dotted transparent;
+}
+
+.WTL-timeline-manager-person:hover,
+.WTL-timeline-manager-place:hover,
+.WTL-timeline-manager-faction:hover {
+    background-color: rgba(255, 235, 59, 0.3) !important;
+    border-bottom: 1px dotted currentColor;
+}
+
+.WTL-timeline-manager-keyword {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.WTL-timeline-manager-keyword:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.WTL-timeline-manager-no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--WTL-timeline-manager-text-color);
+    font-style: italic;
+    grid-column: 1 / -1;
+}
+.WTL-timeline-manager-timeline-item[style*="display: none"] {
+    display: none !important;
+}
+
+/* Enhanced highlight styles for better visibility */
+.WTL-timeline-manager-person.WTL-timeline-manager-highlighted,
+.WTL-timeline-manager-place.WTL-timeline-manager-highlighted,
+.WTL-timeline-manager-faction.WTL-timeline-manager-highlighted {
+    background-color: #FFEB3B !important;
+    color: #333 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    box-shadow: 0 0 8px rgba(255, 235, 59, 0.8) !important;
+    border: 1px solid #FFC107 !important;
+}
+
+.WTL-timeline-manager-timeline-item.WTL-timeline-manager-highlighted {
+    border: 2px solid #4CAF50 !important;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.4) !important;
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+}
+
+.WTL-timeline-manager-timeline-item.WTL-timeline-manager-highlighted .WTL-timeline-manager-timeline-content {
+    background: rgba(76, 175, 80, 0.05) !important;
+    border-left-color: #4CAF50 !important;
+}
+
+/* Ensure non-highlighted items are properly hidden during filtering */
+.WTL-timeline-manager-timeline-item:not(.WTL-timeline-manager-highlighted):not(.WTL-timeline-manager-visible) {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Make sure highlighted items are visible */
+.WTL-timeline-manager-timeline-item.WTL-timeline-manager-highlighted {
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+.WTL-timeline-manager-custom-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+.WTL-timeline-manager-fallback-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: var(--WTL-timeline-manager-primary-color);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* Ensure proper alignment for custom icons in timeline markers */
+.WTL-timeline-manager-timeline-marker .WTL-timeline-manager-custom-icon,
+.WTL-timeline-manager-timeline-marker .WTL-timeline-manager-fallback-icon {
+    width: 12px;
+    height: 12px;
+}
+
+.WTL-timeline-manager-year .WTL-timeline-manager-custom-icon,
+.WTL-timeline-manager-year .WTL-timeline-manager-fallback-icon {
+    margin-right: 8px;
+}
+
+/* Filter section styles */
+.WTL-timeline-manager-filters-section {
+	margin-bottom: 30px;
+	padding: 20px;
+	background: var(--WTL-timeline-manager-card-bg);
+	border-radius: 10px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.WTL-timeline-manager-filters-title {
+	font-size: 1.3rem;
+	color: var(--WTL-timeline-manager-primary-color);
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.WTL-timeline-manager-filters-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+.WTL-timeline-manager-filter-group {
+	flex: 1;
+	min-width: 200px;
+}
+
+.WTL-timeline-manager-filter-group h4 {
+	font-size: 1.1rem;
+	color: var(--WTL-timeline-manager-secondary-color);
+	margin-bottom: 10px;
+	border-bottom: 1px solid var(--WTL-timeline-manager-border-color);
+	padding-bottom: 5px;
+}
+
+.WTL-timeline-manager-checkbox-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.WTL-timeline-manager-checkbox-group label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+.WTL-timeline-manager-checkbox-group input[type="checkbox"] {
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.WTL-timeline-manager-filter-controls {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	flex-wrap: wrap;
+}
+
+.WTL-timeline-manager-filter-btn {
+	padding: 10px 20px;
+	background: var(--WTL-timeline-manager-card-bg);
+	color: var(--WTL-timeline-manager-text-color);
+	border: 1px solid var(--WTL-timeline-manager-border-color);
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.WTL-timeline-manager-filter-btn:hover {
+	background: var(--WTL-timeline-manager-hover-color);
+}
+
+.WTL-timeline-manager-filter-btn.WTL-timeline-manager-active {
+	background: var(--WTL-timeline-manager-primary-color);
+	color: white;
+	border-color: var(--WTL-timeline-manager-primary-color);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+	.WTL-timeline-manager-filters-container {
+		flex-direction: column;
+		gap: 20px;
+	}
+	
+	.WTL-timeline-manager-filter-group {
+		min-width: 100%;
+	}
+}
+
+/* Styles for "All" checkboxes */
+.WTL-timeline-manager-checkbox-group label:first-child {
+    font-weight: bold;
+    border-bottom: 1px solid var(--WTL-timeline-manager-border-color);
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.WTL-timeline-manager-checkbox-group label:last-child {
+    font-style: italic;
+    border-top: 1px solid var(--WTL-timeline-manager-border-color);
+    padding-top: 5px;
+    margin-top: 5px;
+}
+
+
+.WTL-timeline-manager-filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--WTL-timeline-manager-border-color);
+}
+
+.WTL-timeline-manager-filters-toggle {
+    background: var(--WTL-timeline-manager-primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.WTL-timeline-manager-filters-toggle:hover {
+    background: var(--WTL-timeline-manager-secondary-color);
+    transform: translateY(-2px);
+}
+
+.WTL-timeline-manager-filters-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.WTL-timeline-manager-filters-content.WTL-timeline-manager-expanded {
+    max-height: 1000px; /* Adjust based on your content */
+    padding-top: 20px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .WTL-timeline-manager-filters-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .WTL-timeline-manager-filters-toggle {
+        align-self: flex-end;
+    }
+}
+
+
+/* PWA Specific Styles */
+.WTL-timeline-manager-pwa-prompt {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--WTL-timeline-manager-card-bg);
+  border: 1px solid var(--WTL-timeline-manager-border-color);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-width: 400px;
+  width: 90%;
+  backdrop-filter: blur(10px);
+}
+
+.WTL-timeline-manager-pwa-content p {
+  margin: 0 0 15px 0;
+  color: var(--WTL-timeline-manager-text-color);
+  font-size: 16px;
+  text-align: center;
+}
+
+.WTL-timeline-manager-pwa-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.WTL-timeline-manager-pwa-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.WTL-timeline-manager-pwa-cancel {
+  background: transparent;
+  color: var(--WTL-timeline-manager-text-color);
+  border: 1px solid var(--WTL-timeline-manager-border-color);
+}
+
+.WTL-timeline-manager-pwa-confirm {
+  background: var(--WTL-timeline-manager-primary-color);
+  color: white;
+}
+
+.WTL-timeline-manager-pwa-cancel:hover {
+  background: var(--WTL-timeline-manager-hover-color);
+}
+
+.WTL-timeline-manager-pwa-confirm:hover {
+  background: var(--WTL-timeline-manager-primary-hover);
+  transform: translateY(-2px);
+}
+
+/* Enhanced mobile styles for PWA */
+@media (max-width: 768px) {
+  .WTL-timeline-manager-pwa-prompt {
+    bottom: 10px;
+    left: 5%;
+    transform: none;
+    width: 90%;
+  }
+  
+  .WTL-timeline-manager-pwa-buttons {
+    flex-direction: column;
+  }
+}
+
+/* Safe area insets for notch devices */
+@supports (padding: max(0px)) {
+  .WTL-timeline-manager-container {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Enhanced touch targets for mobile */
+@media (max-width: 768px) {
+  .WTL-timeline-manager-keyword,
+  .WTL-timeline-manager-filter-btn,
+  .WTL-timeline-manager-theme-toggle label {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}

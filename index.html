@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="theme-color" content="#162447">
+		<meta name="description" content="Interactive timeline of Wesnoth history - Explore the chronological history of the kingdom of Wesnoth and surrounding regions">
+		
+		<!-- PWA Manifest -->
+		<link rel="manifest" href="/manifest.json">
+		
+		<!-- Apple Touch Icons -->
+		<link rel="apple-touch-icon" href="/assets/pwa-icons/icon-152x152.png">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="default">
+		<meta name="apple-mobile-web-app-title" content="Wesnoth Timeline">
+		
+		<!-- Microsoft Tile -->
+		<meta name="msapplication-TileColor" content="#162447">
+		<meta name="msapplication-TileImage" content="/assets/pwa-icons/icon-144x144.png">
+		
+		<title>Wesnoth Timeline</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+		<link rel="stylesheet" href="styles/timeline-manager.css">
+	</head>
+	<body>
+		<div class="WTL-timeline-manager-container">
+			<header class="WTL-timeline-manager-header">
+				<h1 class="WTL-timeline-manager-h1" data-i18n="timeline_title">Chronologie Wesnoth</h1>
+				<p class="WTL-timeline-manager-subtitle" data-i18n="timeline_subtitle">Explorez l'histoire chronologique du royaume de Wesnoth et des régions environnantes</p>
+			</header>
+			
+			<div class="WTL-timeline-manager-controls">
+				<div class="WTL-timeline-manager-language-selector">
+					<span data-i18n="language_label">Langue:</span>
+					<select class="WTL-timeline-manager-select" id="languageSelect">
+						<option value="en">English</option>
+						<option value="fr">Français</option>
+						<option value="it">Italiano</option>
+						<option value="ar">العربية</option>
+					</select>
+				</div>
+				<div class="WTL-timeline-manager-theme-selector">
+					<div class="WTL-timeline-manager-theme-toggle">
+						<span data-i18n="theme_label">Thème:</span>
+						<label class="WTL-timeline-manager-switch">
+							<input type="checkbox" id="themeToggle">
+							<span class="WTL-timeline-manager-slider"></span>
+						</label>
+						<span id="themeText" data-i18n="theme_light">Clair</span>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Nouvelle section pour les filtres -->
+			<div class="WTL-timeline-manager-filters-section">
+				<div class="WTL-timeline-manager-filters-header">
+					<h3 class="WTL-timeline-manager-filters-title" data-i18n="filters_title">Filtrer les événements</h3>
+					<button class="WTL-timeline-manager-filters-toggle" id="filtersToggle" data-i18n="filters_expand">Développer</button>
+				</div>
+				<div class="WTL-timeline-manager-filters-content" id="filtersContent">
+					<div class="WTL-timeline-manager-filters-container">
+						<div class="WTL-timeline-manager-filter-group">
+							<h4 data-i18n="filter_category">Catégorie</h4>
+							<div class="WTL-timeline-manager-checkbox-group">
+								<!-- Category checkboxes will be generated here -->
+							</div>
+						</div>
+						
+						<div class="WTL-timeline-manager-filter-group">
+							<h4 data-i18n="filter_campaign">Campagnes</h4>
+							<div class="WTL-timeline-manager-checkbox-group" id="campaignFilter">
+								<!-- Campaign checkboxes will be generated here -->
+							</div>
+						</div>
+						
+						<div class="WTL-timeline-manager-filter-group">
+							<h4 data-i18n="filter_universe">Univers</h4>
+							<div class="WTL-timeline-manager-checkbox-group" id="universeFilter">
+								<!-- Universe checkboxes will be generated here -->
+							</div>
+						</div>
+					</div>
+					<div class="WTL-timeline-manager-filter-controls">
+						<button class="WTL-timeline-manager-filter-btn" id="applyFilters" data-i18n="apply_filters">Appliquer les filtres</button>
+						<button class="WTL-timeline-manager-filter-btn" id="resetFilters" data-i18n="reset_filters">Réinitialiser les filtres</button>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Section pour les mots-clés -->
+			<div class="WTL-timeline-manager-keywords-section">
+				<h3 class="WTL-timeline-manager-keywords-title" data-i18n="keywords_title">Filtrer par mots-clés</h3>
+				<div class="WTL-timeline-manager-keywords-container" id="keywordsContainer">
+					<!-- Les mots-clés seront générés par JavaScript -->
+				</div>
+				<div class="WTL-timeline-manager-filter-controls">
+					<button class="WTL-timeline-manager-filter-btn" id="resetHighlights" data-i18n="reset_highlights">Réinitialiser les surlignements</button>
+					<button class="WTL-timeline-manager-filter-btn" id="toggleAll" data-i18n="toggle_all">Afficher/Masquer tout</button>
+				</div>
+			</div>
+			
+			<div class="WTL-timeline-manager-era-section">
+				<h2 class="WTL-timeline-manager-era-title" data-i18n="era_founding_title">La Fondation de Wesnoth</h2>
+				<p class="WTL-timeline-manager-era-description" data-i18n="era_founding_description">
+					Pendant l'âge de la Fondation de Wesnoth, il y avait deux localisations géographiques importantes, l'Île Verte et le Grand Continent. <span class="WTL-timeline-manager-person" data-person="Haldric">Haldric</span> est la principale figure historique de cette époque. Cet âge se termine avec la fondation de Wesnoth en tant que pays sur le Grand Continent, et avec les orcs attaquant à la fois les elfes et les humains depuis la mer.
+				</p>
+			</div>
+			
+			<div class="WTL-timeline-manager-timeline" id="timeline">
+				<!-- Les éléments de la timeline seront générés par JavaScript -->
+			</div>
+			
+			<footer class="WTL-timeline-manager-footer">
+				<p data-i18n="footer_text">Chronologie Wesnoth &copy; 2023 - Basé sur l'histoire officielle de Battle for Wesnoth</p>
+			</footer>
+		</div>
+		
+		<!-- PWA Installation Prompt -->
+		<div id="pwaInstallPrompt" class="WTL-timeline-manager-pwa-prompt" style="display: none;">
+			<div class="WTL-timeline-manager-pwa-content">
+				<p>Install Wesnoth Timeline for better experience?</p>
+				<div class="WTL-timeline-manager-pwa-buttons">
+					<button id="pwaInstallCancel" class="WTL-timeline-manager-pwa-btn WTL-timeline-manager-pwa-cancel">Not Now</button>
+					<button id="pwaInstallConfirm" class="WTL-timeline-manager-pwa-btn WTL-timeline-manager-pwa-confirm">Install</button>
+				</div>
+			</div>
+		</div>
+		
+		<!-- External JavaScript files -->
+		<script src="scripts/timeline-data.js"></script>
+		<script src="scripts/icons-manager.js"></script>
+		<script src="scripts/lang/en.js"></script>
+		<script src="scripts/lang/fr.js"></script>
+		<script src="scripts/lang/it.js"></script>
+		<script src="scripts/lang/ar.js"></script>
+		<script src="scripts/translation-manager.js"></script>
+		<script src="scripts/timeline-manager.js"></script>
+		<script src="scripts/initialize.js"></script>
+		
+		<!-- PWA Service Worker Registration -->
+		<script>
+			// Register Service Worker
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', function() {
+					navigator.serviceWorker.register('/sw.js')
+						.then(function(registration) {
+							console.log('Service Worker registered with scope:', registration.scope);
+						})
+						.catch(function(error) {
+							console.log('Service Worker registration failed:', error);
+						});
+				});
+			}
+			
+			// PWA Installation Prompt
+			let deferredPrompt;
+			const installPrompt = document.getElementById('pwaInstallPrompt');
+			const installConfirm = document.getElementById('pwaInstallConfirm');
+			const installCancel = document.getElementById('pwaInstallCancel');
+			
+			window.addEventListener('beforeinstallprompt', (e) => {
+				// Prevent the mini-infobar from appearing on mobile
+				e.preventDefault();
+				// Stash the event so it can be triggered later
+				deferredPrompt = e;
+				
+				// Show our custom install prompt
+				setTimeout(() => {
+					installPrompt.style.display = 'block';
+				}, 3000);
+			});
+			
+			installConfirm.addEventListener('click', async () => {
+				if (!deferredPrompt) return;
+				
+				// Show the install prompt
+				deferredPrompt.prompt();
+				
+				// Wait for the user to respond to the prompt
+				const { outcome } = await deferredPrompt.userChoice;
+				console.log(`User response to the install prompt: ${outcome}`);
+				
+				// We've used the prompt, and can't use it again, throw it away
+				deferredPrompt = null;
+				
+				// Hide the custom prompt
+				installPrompt.style.display = 'none';
+			});
+			
+			installCancel.addEventListener('click', () => {
+				installPrompt.style.display = 'none';
+			});
+		</script>
+	</body>
+</html>
