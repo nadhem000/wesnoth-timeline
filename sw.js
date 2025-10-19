@@ -1,6 +1,6 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.3.3';
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v3';
+const CACHE_NAME = 'wesnoth-timeline-v1.3.4';
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v4';
 const urlsToCache = [
     '/',
     '/index.html',
