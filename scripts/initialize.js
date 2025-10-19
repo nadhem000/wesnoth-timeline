@@ -12,13 +12,13 @@ async function initializePage() {
     if (savedLanguage) {
         currentLanguage = savedLanguage;
         document.getElementById('languageSelect').value = currentLanguage;
-    }
+	}
     
     if (savedTheme) {
         currentTheme = savedTheme;
         document.getElementById('themeToggle').checked = (currentTheme === 'dark');
         updateTheme();
-    }
+	}
     
     // Initialize filters
     initializeFilters();
@@ -56,17 +56,18 @@ async function initializePage() {
     // FIXED: Only show permission prompt after Push Manager is fully initialized
     if (WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
         setTimeout(() => {
-            if (typeof WTLPushManager.showPermissionPrompt === 'function') {
-                WTLPushManager.showPermissionPrompt();
-            }
-        }, 3000);
-    }
+			if (WTLPushManager && typeof WTLPushManager.showPermissionPrompt === 'function' && 
+				WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
+				WTLPushManager.showPermissionPrompt();
+			}
+		}, 3000);
+	}
     
     // Add highlight event listeners
     setTimeout(() => {
         console.log('Setting up highlight listeners...');
         addHighlightEventListeners();
-    }, 500);
+	}, 500);
     
     // Initialize sync features
     initializeSyncFeatures();
@@ -79,25 +80,25 @@ function addNotificationControls() {
         const notificationContainer = document.createElement('div');
         notificationContainer.className = 'WTL-timeline-manager-notification-selector';
         notificationContainer.innerHTML = `
-            <div class="WTL-timeline-manager-notification-toggle">
-                <span data-i18n="notifications_label">Notifications:</span>
-                <label class="WTL-timeline-manager-switch">
-                    <input type="checkbox" id="notificationToggle">
-                    <span class="WTL-timeline-manager-slider"></span>
-                </label>
-                <span id="notificationStatus" class="WTL-timeline-manager-notification-status">Checking...</span>
-            </div>
-            <button id="testNotification" class="WTL-timeline-manager-notification-test-btn" title="Test notification">
-                <i class="fas fa-bell"></i>
-                <span>Test</span>
-            </button>
+		<div class="WTL-timeline-manager-notification-toggle">
+		<span data-i18n="notifications_label">Notifications:</span>
+		<label class="WTL-timeline-manager-switch">
+		<input type="checkbox" id="notificationToggle">
+		<span class="WTL-timeline-manager-slider"></span>
+		</label>
+		<span id="notificationStatus" class="WTL-timeline-manager-notification-status">Checking...</span>
+		</div>
+		<button id="testNotification" class="WTL-timeline-manager-notification-test-btn" title="Test notification">
+		<i class="fas fa-bell"></i>
+		<span>Test</span>
+		</button>
         `;
         controls.appendChild(notificationContainer);
         
         // Add event listeners
         document.getElementById('notificationToggle').addEventListener('change', toggleNotifications);
         document.getElementById('testNotification').addEventListener('click', testNotification);
-    }
+	}
 }
 
 async function toggleNotifications() {
@@ -108,11 +109,11 @@ async function toggleNotifications() {
         const success = await WTLPushManager.requestPermission();
         if (!success) {
             toggle.checked = false;
-        }
-    } else {
+		}
+		} else {
         // Disable notifications
         await WTLPushManager.disableNotifications();
-    }
+	}
 }
 
 async function testNotification() {
@@ -122,8 +123,8 @@ async function testNotification() {
         WTLPushManager.showLocalAlert(
             'Notifications Disabled', 
             'Please enable notifications first by toggling the switch above.'
-        );
-    }
+		);
+	}
 }
 
 // function to trigger notifications from other parts of your app
@@ -142,27 +143,27 @@ function initializeHowToModal() {
     const closeBtn = document.getElementById('howToModalClose');
     const tabs = document.querySelectorAll('.WTL-timeline-manager-modal-tab');
     const tabPanes = document.querySelectorAll('.WTL-timeline-manager-tab-pane');
-
+	
     // Open modal
     btn.addEventListener('click', () => {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    });
-
+	});
+	
     // Close modal
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
-    });
-
+	});
+	
     // Close modal when clicking outside
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-        }
-    });
-
+		}
+	});
+	
     // Tab switching
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -175,16 +176,16 @@ function initializeHowToModal() {
             // Add active class to clicked tab and corresponding pane
             tab.classList.add('active');
             document.getElementById(`${tabId}-tab`).classList.add('active');
-        });
-    });
-
+		});
+	});
+	
     // Close modal with Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.style.display === 'block') {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-        }
-    });
+		}
+	});
 }
 
 // Function to initialize eras section
@@ -199,9 +200,9 @@ function initializeErasSection() {
             
             if (translations[currentLanguage]) {
                 erasToggle.textContent = translations[currentLanguage][isExpanded ? 'eras_collapse' : 'eras_expand'];
-            }
-        });
-    }
+			}
+		});
+	}
     
     // Initialize individual era toggles
     const eraToggles = document.querySelectorAll('.WTL-timeline-manager-era-toggle');
@@ -215,9 +216,9 @@ function initializeErasSection() {
             
             if (translations[currentLanguage]) {
                 this.textContent = translations[currentLanguage][isExpanded ? 'era_collapse' : 'era_expand'];
-            }
-        });
-    });
+			}
+		});
+	});
 }
 
 // Function to initialize introduction section
@@ -232,9 +233,9 @@ function initializeIntroduction() {
             
             if (translations[currentLanguage]) {
                 introToggle.textContent = translations[currentLanguage][isExpanded ? 'intro_collapse' : 'intro_expand'];
-            }
-        });
-    }
+			}
+		});
+	}
 }
 
 // Initialize sync features
@@ -243,25 +244,25 @@ function initializeSyncFeatures() {
         // Register background sync
         navigator.serviceWorker.ready.then(registration => {
             return registration.sync.register('background-sync-timeline');
-        }).then(() => {
+			}).then(() => {
             console.log('Background Sync registered');
-        }).catch(err => {
+			}).catch(err => {
             console.log('Background Sync registration failed:', err);
-        });
-    }
+		});
+	}
     
     if ('serviceWorker' in navigator && 'periodicSync' in navigator) {
         // Register periodic sync (daily)
         navigator.serviceWorker.ready.then(registration => {
             return registration.periodicSync.register('periodic-sync-timeline', {
                 minInterval: 24 * 60 * 60 * 1000 // 24 hours
-            });
-        }).then(() => {
+			});
+			}).then(() => {
             console.log('Periodic Sync registered');
-        }).catch(err => {
+			}).catch(err => {
             console.log('Periodic Sync registration failed:', err);
-        });
-    }
+		});
+	}
     
     // Listen for updates from service worker
     if ('serviceWorker' in navigator) {
@@ -274,11 +275,11 @@ function initializeSyncFeatures() {
                 if (event.data.file.includes('timeline-data.js') || event.data.file.includes('lang/')) {
                     setTimeout(() => {
                         location.reload();
-                    }, 2000);
-                }
-            }
-        });
-    }
+					}, 2000);
+				}
+			}
+		});
+	}
 }
 
 // Show sync notification
@@ -287,8 +288,8 @@ function showSyncNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'WTL-timeline-manager-sync-notification';
     notification.innerHTML = `
-        <span>${message}</span>
-        <button onclick="this.parentElement.remove()">×</button>
+	<span>${message}</span>
+	<button onclick="this.parentElement.remove()">×</button>
     `;
     
     // Add styles if not already added
@@ -296,43 +297,43 @@ function showSyncNotification(message) {
         const styles = document.createElement('style');
         styles.id = 'sync-notification-styles';
         styles.textContent = `
-            .WTL-timeline-manager-sync-notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--WTL-timeline-manager-primary-color);
-                color: white;
-                padding: 12px 16px;
-                border-radius: 4px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                animation: slideIn 0.3s ease-out;
-            }
-            
-            .WTL-timeline-manager-sync-notification button {
-                background: none;
-                border: none;
-                color: white;
-                font-size: 18px;
-                cursor: pointer;
-                padding: 0;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
-            }
+		.WTL-timeline-manager-sync-notification {
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		background: var(--WTL-timeline-manager-primary-color);
+		color: white;
+		padding: 12px 16px;
+		border-radius: 4px;
+		box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+		z-index: 10000;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		animation: slideIn 0.3s ease-out;
+		}
+		
+		.WTL-timeline-manager-sync-notification button {
+		background: none;
+		border: none;
+		color: white;
+		font-size: 18px;
+		cursor: pointer;
+		padding: 0;
+		width: 20px;
+		height: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		}
+		
+		@keyframes slideIn {
+		from { transform: translateX(100%); opacity: 0; }
+		to { transform: translateX(0); opacity: 1; }
+		}
         `;
         document.head.appendChild(styles);
-    }
+	}
     
     document.body.appendChild(notification);
     
@@ -340,8 +341,8 @@ function showSyncNotification(message) {
     setTimeout(() => {
         if (notification.parentElement) {
             notification.remove();
-        }
-    }, 5000);
+		}
+	}, 5000);
 }
 
 // Manual sync function
@@ -356,22 +357,22 @@ async function manualSync() {
             channel.port1.onmessage = event => {
                 if (event.data.success) {
                     showSyncNotification('Manual sync completed successfully');
-                } else {
+					} else {
                     showSyncNotification('Manual sync failed: ' + event.data.error);
-                }
-            };
+				}
+			};
             
             registration.active.postMessage({
                 type: 'TRIGGER_SYNC'
-            }, [channel.port2]);
+			}, [channel.port2]);
             
             showSyncNotification('Starting manual sync...');
             
-        } catch (error) {
+			} catch (error) {
             console.log('Manual sync failed:', error);
             showSyncNotification('Manual sync failed');
-        }
-    }
+		}
+	}
 }
 
 // sync button to controls
@@ -381,15 +382,15 @@ function addSyncButton() {
         const syncContainer = document.createElement('div');
         syncContainer.className = 'WTL-timeline-manager-sync-selector';
         syncContainer.innerHTML = `
-            <button id="syncButton" class="WTL-timeline-manager-sync-btn" title="Sync timeline data">
-                <i class="fas fa-sync-alt"></i>
-                <span>Sync</span>
-            </button>
+		<button id="syncButton" class="WTL-timeline-manager-sync-btn" title="Sync timeline data">
+		<i class="fas fa-sync-alt"></i>
+		<span>Sync</span>
+		</button>
         `;
         controls.appendChild(syncContainer);
         
         document.getElementById('syncButton').addEventListener('click', manualSync);
-    }
+	}
 }
 
 // Fonction pour ajouter les écouteurs d'événements pour les cases "All"
@@ -402,9 +403,9 @@ function addAllCheckboxListeners() {
         categoryAll.addEventListener('change', function() {
             categoryCheckboxes.forEach(cb => {
                 cb.checked = this.checked;
-            });
-        });
-    }
+			});
+		});
+	}
     
     // Campaign "All" checkbox
     const campaignAll = document.querySelector('input[name="campaign"][value="all"]');
@@ -414,9 +415,9 @@ function addAllCheckboxListeners() {
         campaignAll.addEventListener('change', function() {
             campaignCheckboxes.forEach(cb => {
                 cb.checked = this.checked;
-            });
-        });
-    }
+			});
+		});
+	}
     
     // Universe "All" checkbox
     const universeAll = document.querySelector('input[name="universe"][value="all"]');
@@ -426,9 +427,9 @@ function addAllCheckboxListeners() {
         universeAll.addEventListener('change', function() {
             universeCheckboxes.forEach(cb => {
                 cb.checked = this.checked;
-            });
-        });
-    }
+			});
+		});
+	}
 }
 
 // test function to verify highlighting works
@@ -443,16 +444,16 @@ function testHighlightFeature() {
 function updateTheme() {
     if (currentTheme === 'dark') {
         document.body.classList.add('WTL-timeline-manager-dark-mode');
-    } else {
+		} else {
         document.body.classList.remove('WTL-timeline-manager-dark-mode');
-    }
+	}
     
     // Mettre à jour le texte du thème
     const themeText = document.getElementById('themeText');
     themeText.setAttribute('data-i18n', currentTheme === 'light' ? 'theme_light' : 'theme_dark');
     if (translations[currentLanguage]) {
         themeText.textContent = translations[currentLanguage][currentTheme === 'light' ? 'theme_light' : 'theme_dark'];
-    }
+	}
 }
 
 // Fonction pour basculer le thème
@@ -467,7 +468,7 @@ function addEventListeners() {
     // Sélecteur de langue
     document.getElementById('languageSelect').addEventListener('change', function() {
         changeLanguage(this.value);
-    });
+	});
     
     // Bouton de basculement de thème
     document.getElementById('themeToggle').addEventListener('change', toggleTheme);

@@ -1,6 +1,6 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.3.7';
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v7';
+const CACHE_NAME = 'wesnoth-timeline-v1.3.8'; // Updated version
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v8';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -70,10 +70,12 @@ self.addEventListener('activate', event => {
             }),
             // Claim clients immediately
             self.clients.claim(),
-            // Enable navigation preload if supported
+            // FIXED: Remove navigation preload for now to avoid the error
+            // We'll implement it properly later if needed
             (() => {
                 if ('navigationPreload' in self.registration) {
-                    return self.registration.navigationPreload.enable();
+                    // We're not using navigation preload currently, so we can disable it
+                    return self.registration.navigationPreload.disable();
                 }
             })()
         ])
@@ -87,55 +89,59 @@ self.addEventListener('fetch', event => {
         return;
     }
 
+    // FIXED: Use a simpler approach without navigation preload
     event.respondWith(
-        caches.match(event.request)
-        .then(response => {
-            // Cache First strategy
-            if (response) {
+        (async () => {
+            // Try cache first
+            const cachedResponse = await caches.match(event.request);
+            if (cachedResponse) {
                 // Return cached version but update cache in background
-                const fetchPromise = fetch(event.request)
-                    .then(networkResponse => {
-                        // Update cache with fresh response
-                        if (networkResponse.ok) {
-                            caches.open(CACHE_NAME)
-                                .then(cache => cache.put(event.request, networkResponse));
-                        }
-                        return networkResponse;
-                    })
-                    .catch(() => {
-                        // Network failed, but we have cached version
-                        console.log('Network failed, using cached version for:', event.request.url);
-                    });
-                
-                return response;
+                updateCacheInBackground(event.request);
+                return cachedResponse;
             }
 
             // Not in cache, try network
-            return fetch(event.request)
-                .then(networkResponse => {
-                    // Cache the new response
-                    if (networkResponse.ok) {
-                        const responseClone = networkResponse.clone();
-                        caches.open(CACHE_NAME)
-                            .then(cache => cache.put(event.request, responseClone));
-                    }
-                    return networkResponse;
-                })
-                .catch(error => {
-                    console.log('Both cache and network failed for:', event.request.url, error);
-                    // For HTML requests, return offline page
-                    if (event.request.destination === 'document') {
-                        return caches.match('/index.html');
-                    }
-                    // For other requests, return a fallback
-                    return new Response('Network error happened', {
-                        status: 408,
-                        headers: { 'Content-Type': 'text/plain' }
-                    });
+            try {
+                const networkResponse = await fetch(event.request);
+                
+                // Cache the new response if successful
+                if (networkResponse.ok) {
+                    const cache = await caches.open(CACHE_NAME);
+                    await cache.put(event.request, networkResponse.clone());
+                }
+                return networkResponse;
+            } catch (error) {
+                console.log('Network failed for:', event.request.url, error);
+                
+                // For HTML requests, return offline page
+                if (event.request.destination === 'document') {
+                    const fallback = await caches.match('/index.html');
+                    if (fallback) return fallback;
+                }
+                
+                // For other requests, return a fallback
+                return new Response('Network error happened', {
+                    status: 408,
+                    headers: { 'Content-Type': 'text/plain' }
                 });
-        })
+            }
+        })()
     );
 });
+
+// Helper function to update cache in background
+async function updateCacheInBackground(request) {
+    try {
+        const networkResponse = await fetch(request);
+        if (networkResponse.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(request, networkResponse);
+        }
+    } catch (error) {
+        // Silent fail - we already have cached version
+        console.log('Background cache update failed:', request.url);
+    }
+}
 
 // Background Sync event
 self.addEventListener('sync', event => {
@@ -238,6 +244,7 @@ self.addEventListener('notificationclick', event => {
         })
     );
 });
+
 // Message event handler for client communication
 self.addEventListener('message', event => {
     console.log('Service Worker received message:', event.data);
