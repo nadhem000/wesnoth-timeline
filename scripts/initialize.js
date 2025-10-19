@@ -12,13 +12,13 @@ async function initializePage() {
     if (savedLanguage) {
         currentLanguage = savedLanguage;
         document.getElementById('languageSelect').value = currentLanguage;
-	}
+    }
     
     if (savedTheme) {
         currentTheme = savedTheme;
         document.getElementById('themeToggle').checked = (currentTheme === 'dark');
         updateTheme();
-	}
+    }
     
     // Initialize filters
     initializeFilters();
@@ -47,7 +47,10 @@ async function initializePage() {
     // Add event listeners
     addEventListeners();
     
-	// Add the offline support initialization
+    // Initialize simple push notifications
+    await WTLPushManager.init();
+    
+    // Add notification controls to UI
     addNotificationControls();
     
     // FIXED: Only show permission prompt after Push Manager is fully initialized
@@ -60,108 +63,45 @@ async function initializePage() {
             if (WTLPushManager && typeof WTLPushManager.showPermissionPrompt === 'function' && 
                 WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
                 WTLPushManager.showPermissionPrompt();
-			}
-		}, 3000);
-	}
+            }
+        }, 3000);
+    }
     
     // Add highlight event listeners
     setTimeout(() => {
         console.log('Setting up highlight listeners...');
         addHighlightEventListeners();
-	}, 500);
+    }, 500);
     
     // Initialize sync features
     initializeSyncFeatures();
 }
 
-function initializeOfflineSupport() {
-    // Check if we're online
-    function updateOnlineStatus() {
-        const isOnline = navigator.onLine;
-        console.log('Online status:', isOnline ? 'online' : 'offline');
-        
-        // Remove any existing offline notification
-        const existingNotification = document.querySelector('.WTL-timeline-manager-offline-notification');
-        if (existingNotification) {
-            existingNotification.remove();
-		}
-        
-        // Show offline notification if we're offline
-        if (!isOnline) {
-            const offlineNotification = document.createElement('div');
-            offlineNotification.className = 'WTL-timeline-manager-offline-notification';
-            offlineNotification.innerHTML = `
-			<i class="fas fa-wifi"></i>
-			You are currently offline. Showing cached version of the timeline.
-			<button onclick="this.parentElement.style.display='none'">×</button>
-            `;
-            offlineNotification.style.cssText = `
-			position: fixed; 
-			top: 0; 
-			left: 0; 
-			right: 0; 
-			background: #ffcc00; 
-			color: #000; 
-			padding: 10px; 
-			text-align: center; 
-			z-index: 10000; 
-			font-weight: bold; 
-			border-bottom: 2px solid #ff9900;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 10px;
-            `;
-            
-            // Style the close button
-            const closeBtn = offlineNotification.querySelector('button');
-            closeBtn.style.cssText = `
-			margin-left: 15px; 
-			background: #ff9900; 
-			border: none; 
-			color: white; 
-			padding: 2px 8px; 
-			border-radius: 3px; 
-			cursor: pointer;
-			font-size: 16px;
-            `;
-            
-            document.body.prepend(offlineNotification);
-		}
-	}
-	
-    // Listen for online/offline events
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    
-    // Initial check
-    updateOnlineStatus();
-}
 function addNotificationControls() {
     const controls = document.querySelector('.WTL-timeline-manager-controls');
     if (controls && !document.getElementById('notificationToggle')) {
         const notificationContainer = document.createElement('div');
         notificationContainer.className = 'WTL-timeline-manager-notification-selector';
         notificationContainer.innerHTML = `
-		<div class="WTL-timeline-manager-notification-toggle">
-		<span>Notifications:</span>
-		<label class="WTL-timeline-manager-switch">
-		<input type="checkbox" id="notificationToggle">
-		<span class="WTL-timeline-manager-slider"></span>
-		</label>
-		<span id="notificationStatus" class="WTL-timeline-manager-notification-status">Checking...</span>
-		</div>
-		<button id="testNotification" class="WTL-timeline-manager-notification-test-btn" title="Test notification">
-		<i class="fas fa-bell"></i>
-		<span>Test</span>
-		</button>
+            <div class="WTL-timeline-manager-notification-toggle">
+                <span>Notifications:</span>
+                <label class="WTL-timeline-manager-switch">
+                    <input type="checkbox" id="notificationToggle">
+                    <span class="WTL-timeline-manager-slider"></span>
+                </label>
+                <span id="notificationStatus" class="WTL-timeline-manager-notification-status">Checking...</span>
+            </div>
+            <button id="testNotification" class="WTL-timeline-manager-notification-test-btn" title="Test notification">
+                <i class="fas fa-bell"></i>
+                <span>Test</span>
+            </button>
         `;
         controls.appendChild(notificationContainer);
         
         // Add event listeners
         document.getElementById('notificationToggle').addEventListener('change', toggleNotifications);
         document.getElementById('testNotification').addEventListener('click', testNotification);
-	}
+    }
 }
 
 async function toggleNotifications() {
@@ -171,10 +111,10 @@ async function toggleNotifications() {
         const success = await WTLPushManager.enableNotifications();
         if (!success) {
             toggle.checked = false;
-		}
-		} else {
+        }
+    } else {
         await WTLPushManager.disableNotifications();
-	}
+    }
 }
 
 async function testNotification() {
@@ -542,16 +482,16 @@ if ('serviceWorker' in navigator) {
             if (event.data.file.includes('timeline-data.js') || event.data.file.includes('lang/')) {
                 setTimeout(() => {
                     location.reload();
-				}, 2000);
-			}
-		}
+                }, 2000);
+            }
+        }
         
         // Handle update notifications from service worker
         if (event.data && event.data.type === 'SHOW_UPDATE_NOTIFICATION') {
             console.log('Showing update notification:', event.data);
             WTLPushManager.showTimelineUpdate(event.data.files.length);
-		}
-	});
+        }
+    });
 }
 // Initialiser la page lorsque le DOM est chargé
 document.addEventListener('DOMContentLoaded', initializePage);

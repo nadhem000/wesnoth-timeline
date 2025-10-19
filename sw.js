@@ -1,7 +1,6 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.4.1'; // Updated version
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v11';
-const OFFLINE_PAGE = '/offline.html'; // We'll create this
+const CACHE_NAME = 'wesnoth-timeline-v1.4.2'; // Updated version
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v12';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -114,10 +113,10 @@ self.addEventListener('fetch', event => {
             } catch (error) {
                 console.log('Network failed for:', event.request.url, error);
                 
-                // For HTML requests, return offline page with notification
-                if (event.request.destination === 'document' || 
-                    event.request.headers.get('accept').includes('text/html')) {
-                    return showOfflineNotification(event.request);
+                // For HTML requests, return offline page
+                if (event.request.destination === 'document') {
+                    const fallback = await caches.match('/index.html');
+                    if (fallback) return fallback;
                 }
                 
                 // For other requests, return a fallback
@@ -129,71 +128,6 @@ self.addEventListener('fetch', event => {
         })()
     );
 });
-
-// Helper function to show offline notification for HTML pages
-async function showOfflineNotification(request) {
-    try {
-        // Try to get the cached page first
-        const cachedPage = await caches.match('/index.html');
-        if (cachedPage) {
-            const cachedHtml = await cachedPage.text();
-            
-            // Create offline notification HTML
-            const offlineNotification = `
-                <div class="WTL-timeline-manager-offline-notification" 
-                     style="position: fixed; top: 0; left: 0; right: 0; background: #ffcc00; color: #000; padding: 10px; text-align: center; z-index: 10000; font-weight: bold; border-bottom: 2px solid #ff9900;">
-                    <i class="fas fa-wifi" style="margin-right: 8px;"></i>
-                    You are currently offline. Showing cached version of the timeline.
-                    <button onclick="this.parentElement.style.display='none'" 
-                            style="margin-left: 15px; background: #ff9900; border: none; color: white; padding: 2px 8px; border-radius: 3px; cursor: pointer;">
-                        ×
-                    </button>
-                </div>
-            `;
-            
-            // Inject the notification into the cached HTML
-            const modifiedHtml = cachedHtml.replace(
-                '<body>', 
-                `<body>${offlineNotification}`
-            );
-            
-            return new Response(modifiedHtml, {
-                headers: { 'Content-Type': 'text/html' }
-            });
-        }
-    } catch (error) {
-        console.log('Error modifying cached page for offline:', error);
-    }
-    
-    // Fallback: return basic offline message
-    return new Response(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Wesnoth Timeline - Offline</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-                .offline-container { max-width: 600px; margin: 100px auto; background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
-                .offline-icon { font-size: 48px; color: #ff9900; margin-bottom: 20px; }
-                h1 { color: #333; margin-bottom: 20px; }
-                p { color: #666; line-height: 1.6; margin-bottom: 20px; }
-                .retry-btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 16px; }
-            </style>
-        </head>
-        <body>
-            <div class="offline-container">
-                <div class="offline-icon">📶</div>
-                <h1>You're Offline</h1>
-                <p>The Wesnoth Timeline is currently unavailable because you appear to be offline.</p>
-                <p>Some features may not work properly until your connection is restored.</p>
-                <button class="retry-btn" onclick="location.reload()">Retry Connection</button>
-            </div>
-        </body>
-        </html>
-    `, {
-        headers: { 'Content-Type': 'text/html' }
-    });
-}
 
 // Helper function to update cache in background
 async function updateCacheInBackground(request) {
@@ -342,6 +276,7 @@ self.addEventListener('push', function(event) {
     }
 });
 
+
 // Enhanced notification click handler
 self.addEventListener('notificationclick', function(event) {
     console.log('Notification clicked:', event.notification.tag);
@@ -384,14 +319,7 @@ self.addEventListener('message', event => {
             })
         );
     }
-
-    // Handle offline status check
-    if (event.data && event.data.type === 'CHECK_OFFLINE_STATUS') {
-        // Simply acknowledge - the main logic is in the fetch handler
-        event.ports[0].postMessage({ offline: false });
-    }
 });
-
 async function showUpdateNotification(updatedFiles) {
     try {
         const clients = await self.clients.matchAll();
