@@ -872,3 +872,55 @@ transition: all 0.3s ease;
         padding: 3px 6px;
     }
 }
+
+
+/* Sync Button Styles */
+.WTL-timeline-manager-sync-selector {
+    display: flex;
+    align-items: center;
+}
+
+.WTL-timeline-manager-sync-btn {
+    background: var(--WTL-timeline-manager-primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.WTL-timeline-manager-sync-btn:hover {
+    background: var(--WTL-timeline-manager-primary-dark);
+}
+
+.WTL-timeline-manager-sync-btn:active {
+    transform: translateY(1px);
+}
+
+.WTL-timeline-manager-sync-btn.syncing {
+    background: var(--WTL-timeline-manager-secondary-color);
+    pointer-events: none;
+}
+
+.WTL-timeline-manager-sync-btn.syncing .fa-sync-alt {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Dark mode adjustments for sync button */
+.WTL-timeline-manager-dark-mode .WTL-timeline-manager-sync-btn {
+    background: var(--WTL-timeline-manager-primary-dark);
+}
+
+.WTL-timeline-manager-dark-mode .WTL-timeline-manager-sync-btn:hover {
+    background: var(--WTL-timeline-manager-primary-color);
+}
