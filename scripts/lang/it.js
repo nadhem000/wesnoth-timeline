@@ -15,6 +15,59 @@ const translations_it = {
     "filters_collapse": "Comprimi", 
     "filter_all": "Tutti",
     "filter_other": "Altro",
+	"how_to_title": "Come fare",
+	"how_to_modal_title": "Guida pratica",
+	
+	// Titoli delle schede
+	"how_to_tab_language": "Aggiungi lingua",
+	"how_to_tab_era": "Aggiungi epoca",
+	"how_to_tab_event": "Aggiungi evento",
+	"how_to_tab_filter": "Aggiungi filtro",
+	
+	// Sezione Lingua
+	"how_to_language_title": "Come aggiungere una nuova lingua",
+	"how_to_language_step1_title": "Crea file della lingua",
+	"how_to_language_step1_desc": "Crea un nuovo file JavaScript nella directory scripts/lang/ con il codice della lingua (es. it.js per l'italiano).",
+	"how_to_language_step2_title": "Aggiorna HTML",
+	"how_to_language_step2_desc": "Aggiungi l'opzione della lingua al selettore di lingua in index.html:",
+	"how_to_language_step3_title": "Registra lingua",
+	"how_to_language_step3_desc": "Aggiungi la lingua all'oggetto translations in translation-manager.js:",
+	"how_to_language_rec1": "Usa codici ISO per i nomi dei file",
+	"how_to_language_rec2": "Mantieni le chiavi di traduzione consistenti tra le lingue",
+	"how_to_language_rec3": "Testa i layout da destra a sinistra per lingue come l'arabo",
+	
+	// Sezione Epoca
+	"how_to_era_title": "Come aggiungere una nuova epoca",
+	"how_to_era_step1_title": "Aggiungi sezione epoca in HTML",
+	"how_to_era_step1_desc": "Aggiungi una nuova sezione epoca nel file index.html all'interno del contenuto delle epoche:",
+	"how_to_era_step2_title": "Aggiungi traduzioni",
+	"how_to_era_step2_desc": "Aggiungi le chiavi di traduzione per la nuova epoca in tutti i file della lingua:",
+	"how_to_era_rec1": "Usa una denominazione consistente per gli ID epoca",
+	"how_to_era_rec2": "Includi contenuto HTML ricco nelle descrizioni",
+	"how_to_era_rec3": "Aggiungi icone appropriate per coerenza visiva",
+	
+	// Sezione Evento
+	"how_to_event_title": "Come aggiungere un nuovo evento temporale",
+	"how_to_event_step1_title": "Aggiungi dati evento",
+	"how_to_event_step1_desc": "Aggiungi un nuovo oggetto evento all'array timelineData in timeline-data.js:",
+	"how_to_event_step2_title": "Aggiungi traduzioni",
+	"how_to_event_step2_desc": "Aggiungi le chiavi di traduzione per l'evento in tutti i file della lingua:",
+	"how_to_event_rec1": "Usa schemi di chiavi di traduzione consistenti",
+	"how_to_event_rec2": "Includi appropriato markup HTML nelle descrizioni",
+	"how_to_event_rec3": "Assegna valori corretti per epoca e categoria",
+	
+	// Sezione Filtro
+	"how_to_filter_title": "Come aggiungere un nuovo filtro",
+	"how_to_filter_step1_title": "Aggiorna logica filtri",
+	"how_to_filter_step1_desc": "Modifica le funzioni di filtro in timeline-manager.js per gestire il tuo nuovo tipo di filtro:",
+	"how_to_filter_step2_title": "Aggiorna applicazione filtri",
+	"how_to_filter_step2_desc": "Aggiorna le funzioni applyFilters() e passesFilters() per includere il tuo nuovo filtro:",
+	"how_to_filter_rec1": "Usa nomi filtro descrittivi",
+	"how_to_filter_rec2": "Testa accuratamente le combinazioni di filtri",
+	"how_to_filter_rec3": "Assicura una corretta gestione degli stati",
+	
+	// Comune
+	"how_to_recommendations": "Raccomandazioni",
 	
 	// Traduzioni del nuovo filtro
 	"filters_title": "Filtra Eventi",
@@ -31,6 +84,12 @@ const translations_it = {
 	"meta_category": "Categoria",
 	"meta_universe": "Universo",
 	"meta_campaigns": "Campagne",
+	"intro_title": "Informazioni su questa cronologia",
+	"intro_expand": "Espandi",
+	"intro_collapse": "Comprimi",
+	"intro_text": "Questa è la cronologia storica ufficiale del paese di Wesnoth e delle regioni circostanti, ricavata da resoconti scritti e storie orali tramandate attraverso le generazioni. Le parti delle voci racchiuse tra parentesi e contenenti un punto interrogativo sono informazioni presunte o non confermate. La storia è ordinata per era, e all'interno dell'era per data, utilizzando la Fondazione di Wesnoth come base. BW=Prima di Wesnoth, YW=Anni Wesnoth. Funzionano allo stesso modo di BC e AD nel nostro sistema di cronologia. Ognuna delle ere è riassunta prima che inizi la cronologia per quell'era. La storia del Grande Continente è un argomento di studio attivo.",
+	"intro_text_2": "Il mondo in cui risiede Wesnoth si chiama Irdya. Prima della Grande Caduta e dell'era tecnologica (non cronachizzata), questo nome è usato solo raramente.",
+	"spoiler_warning": "Avviso spoiler! Questa pagina contiene spoiler della trama di diverse campagne.",
 	
 	// Campaign names
 	"campaign_the_rise_of_wesnoth": "L'Ascesa di Wesnoth",
@@ -45,6 +104,25 @@ const translations_it = {
 	"campaign_eastern_invasion": "Invasione Orientale",
 	"campaign_dead_water": "Acque Morte",
 	"campaign_under_the_burning_suns": "Sotto i Soli Roventi",
+	
+	//  Era translations
+	"general_eras_title": "Ere Generali",
+	"eras_expand": "Espandi",
+	"eras_collapse": "Comprimi", 
+	"era_expand": "Espandi",
+	"era_collapse": "Comprimi",
+	"coming_soon": "Prossimamente",
+	
+	// Era titles
+	"era_founding_title": "La Fondazione di Wesnoth",
+	"era_taming_title": "L'Addomesticamento della Natura Selvaggia",
+	"era_golden_age_title": "L'Età dell'Oro di Wesnoth",
+	"era_first_dark_age_title": "La Prima Età Oscura di Wesnoth",
+	"era_turmoil_title": "I Tumulti di Asheviere",
+	"era_fear_title": "L'Era della Paura", 
+	"era_silver_age_title": "L'Età d'Argento di Wesnoth",
+	"era_legacy_title": "L'Eredità di Karun Occhio Nero",
+	"era_after_fall_title": "Dopo la Grande Caduta",
 	
 	// Eras
 	"era_founding_title": "La Fondazione di Wesnoth",

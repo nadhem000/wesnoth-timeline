@@ -15,6 +15,59 @@ const translations_en = {
     "filters_collapse": "Collapse",
     "filter_all": "All",
     "filter_other": "Other",
+	"how_to_title": "How To",
+	"how_to_modal_title": "How To Guide",
+	
+	// Tab titles
+	"how_to_tab_language": "Add Language",
+	"how_to_tab_era": "Add Era", 
+	"how_to_tab_event": "Add Event",
+	"how_to_tab_filter": "Add Filter",
+	
+	// Language section
+	"how_to_language_title": "How to Add a New Language",
+	"how_to_language_step1_title": "Create Language File",
+	"how_to_language_step1_desc": "Create a new JavaScript file in the scripts/lang/ directory named with the language code (e.g., es.js for Spanish).",
+	"how_to_language_step2_title": "Update HTML",
+	"how_to_language_step2_desc": "Add the language option to the language selector in index.html:",
+	"how_to_language_step3_title": "Register Language",
+	"how_to_language_step3_desc": "Add the language to the translations object in translation-manager.js:",
+	"how_to_language_rec1": "Use ISO language codes for file names",
+	"how_to_language_rec2": "Keep all translation keys consistent across languages",
+	"how_to_language_rec3": "Test right-to-left layouts for languages like Arabic",
+	
+	// Era section
+	"how_to_era_title": "How to Add a New Era",
+	"how_to_era_step1_title": "Add Era Section in HTML",
+	"how_to_era_step1_desc": "Add a new era section in the index.html file within the eras content:",
+	"how_to_era_step2_title": "Add Translations",
+	"how_to_era_step2_desc": "Add translation keys for the new era in all language files:",
+	"how_to_era_rec1": "Use consistent naming for era IDs",
+	"how_to_era_rec2": "Include rich HTML content in descriptions",
+	"how_to_era_rec3": "Add appropriate icons for visual consistency",
+	
+	// Event section
+	"how_to_event_title": "How to Add a New Timeline Event",
+	"how_to_event_step1_title": "Add Event Data",
+	"how_to_event_step1_desc": "Add a new event object to the timelineData array in timeline-data.js:",
+	"how_to_event_step2_title": "Add Translations",
+	"how_to_event_step2_desc": "Add translation keys for the event in all language files:",
+	"how_to_event_rec1": "Use consistent translation key patterns",
+	"how_to_event_rec2": "Include proper HTML markup in descriptions",
+	"how_to_event_rec3": "Assign correct era and category values",
+	
+	// Filter section
+	"how_to_filter_title": "How to Add a New Filter",
+	"how_to_filter_step1_title": "Update Filter Logic",
+	"how_to_filter_step1_desc": "Modify the filter functions in timeline-manager.js to handle your new filter type:",
+	"how_to_filter_step2_title": "Update Filter Application",
+	"how_to_filter_step2_desc": "Update the applyFilters() and passesFilters() functions to include your new filter:",
+	"how_to_filter_rec1": "Use descriptive filter names",
+	"how_to_filter_rec2": "Test filter combinations thoroughly",
+	"how_to_filter_rec3": "Ensure proper state management",
+	
+	// Common
+	"how_to_recommendations": "Recommendations",
 	
 	// filter translations
 	"filters_title": "Filter Events",
@@ -31,6 +84,12 @@ const translations_en = {
 	"meta_category": "Category",
 	"meta_universe": "Universe", 
 	"meta_campaigns": "Campaigns",
+	"intro_title": "About This Timeline",
+	"intro_expand": "Expand",
+	"intro_collapse": "Collapse", 
+	"intro_text": "This is a official chronological history of the country of Wesnoth and surrounding regions, gleaned from written accounts and verbal histories passed down through the generations. Portions of entries surrounded by parentheses and containing a question mark are assumed or unconfirmed information. The history is sorted by era, and within the era by date, using the Foundation of Wesnoth as a base. BW=Before Wesnoth, YW=Years Wesnoth. They function the same way as BC and AD do in our timekeeping system. Each of the eras is summarized before the timeline for that era begins. This history of the Great Continent is a subject of active scholarship.",
+	"intro_text_2": "The world that Wesnoth resides in is called Irdya. Before the Great Fall and the (unchronicled) technological age, this name is only rarely used.",
+	"spoiler_warning": "Spoiler warning! This page contains plot spoilers to several campaigns.",
 	
 	// Campaign names
 	"campaign_the_rise_of_wesnoth": "The Rise of Wesnoth",
@@ -45,6 +104,25 @@ const translations_en = {
 	"campaign_eastern_invasion": "Eastern Invasion",
 	"campaign_dead_water": "Dead Water",
 	"campaign_under_the_burning_suns": "Under the Burning Suns",
+	
+	// Era translations
+	"general_eras_title": "General Eras",
+	"eras_expand": "Expand",
+	"eras_collapse": "Collapse",
+	"era_expand": "Expand", 
+	"era_collapse": "Collapse",
+	"coming_soon": "Coming Soon",
+	
+	// Era titles
+	"era_founding_title": "The Founding of Wesnoth",
+	"era_taming_title": "The Taming of the Wild",
+	"era_golden_age_title": "The Golden Age of Wesnoth", 
+	"era_first_dark_age_title": "The First Dark Age of Wesnoth",
+	"era_turmoil_title": "The Turmoil of Asheviere",
+	"era_fear_title": "The Age of Fear",
+	"era_silver_age_title": "The Silver Age of Wesnoth",
+	"era_legacy_title": "The Legacy of Black-Eye Karun",
+	"era_after_fall_title": "After the Great Fall",
 	
 	// Eras
 	"era_founding_title": "The Founding of Wesnoth",

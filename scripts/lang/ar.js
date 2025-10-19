@@ -15,6 +15,59 @@ const translations_ar = {
     "filters_collapse": "طي",
     "filter_all": "الكل",
     "filter_other": "أخرى",
+	"how_to_title": "كيفية التنفيذ",
+	"how_to_modal_title": "دليل إرشادي",
+	
+	// عناوين الألسنة
+	"how_to_tab_language": "إضافة لغة",
+	"how_to_tab_era": "إضافة حقبة",
+	"how_to_tab_event": "إضافة حدث",
+	"how_to_tab_filter": "إضافة عامل تصفية",
+	
+	// قسم اللغة
+	"how_to_language_title": "كيفية إضافة لغة جديدة",
+	"how_to_language_step1_title": "إنشاء ملف اللغة",
+	"how_to_language_step1_desc": "أنشئ ملف JavaScript جديد في مجلد scripts/lang/ باسم رمز اللغة (مثل ar.js للعربية).",
+	"how_to_language_step2_title": "تحديث HTML",
+	"how_to_language_step2_desc": "أضف خيار اللغة إلى منتقي اللغة في index.html:",
+	"how_to_language_step3_title": "تسجيل اللغة",
+	"how_to_language_step3_desc": "أضف اللغة إلى كائن الترجمات في translation-manager.js:",
+	"how_to_language_rec1": "استخدم رموز ISO لأسماء الملفات",
+	"how_to_language_rec2": "حافظ على مفاتيح الترجمة متسقة عبر جميع اللغات",
+	"how_to_language_rec3": "اختبر التخطيطات من اليمين لليسار للغات مثل العربية",
+	
+	// قسم الحقبة
+	"how_to_era_title": "كيفية إضافة حقبة جديدة",
+	"how_to_era_step1_title": "إضافة قسم حقبة في HTML",
+	"how_to_era_step1_desc": "أضف قسم حقبة جديد في ملف index.html ضمن محتوى الحقب:",
+	"how_to_era_step2_title": "إضافة الترجمات",
+	"how_to_era_step2_desc": "أضف مفاتيح الترجمة للحقبة الجديدة في جميع ملفات اللغة:",
+	"how_to_era_rec1": "استخدم تسمية متسقة لمعرفات الحقب",
+	"how_to_era_rec2": "ضمّن محتوى HTML غني في الأوصاف",
+	"how_to_era_rec3": "أضف أيقونات مناسبة للاتساق البصري",
+	
+	// قسم الحدث
+	"how_to_event_title": "كيفية إضافة حدث زمني جديد",
+	"how_to_event_step1_title": "إضافة بيانات الحدث",
+	"how_to_event_step1_desc": "أضف كائن حدث جديد إلى مصفوفة timelineData في timeline-data.js:",
+	"how_to_event_step2_title": "إضافة الترجمات",
+	"how_to_event_step2_desc": "أضف مفاتيح الترجمة للحدث في جميع ملفات اللغة:",
+	"how_to_event_rec1": "استخدم أنماطًا متسقة لمفاتيح الترجمة",
+	"how_to_event_rec2": "ضمّن ترميز HTML مناسب في الأوصاف",
+	"how_to_event_rec3": "عيّن قيم الحقبة والفئة الصحيحة",
+	
+	// قسم عامل التصفية
+	"how_to_filter_title": "كيفية إضافة عامل تصفية جديد",
+	"how_to_filter_step1_title": "تحديث منطق التصفية",
+	"how_to_filter_step1_desc": "عدّل دوال التصفية في timeline-manager.js للتعامل مع نوع عامل التصفية الجديد:",
+	"how_to_filter_step2_title": "تحديث تطبيق التصفية",
+	"how_to_filter_step2_desc": "حدّث دوال applyFilters() و passesFilters() لتشمل عامل التصفية الجديد:",
+	"how_to_filter_rec1": "استخدم أسماء عوامل تصفية توضيحية",
+	"how_to_filter_rec2": "اختبر تركيبات عوامل التصفية بدقة",
+	"how_to_filter_rec3": "تأكد من الإدارة السليمة للحالات",
+	
+	// مشترك
+	"how_to_recommendations": "توصيات",
 	
 	// ترجمات الفلتر الجديد
 	"filters_title": "تصفية الأحداث",
@@ -31,6 +84,12 @@ const translations_ar = {
 	"meta_category": "الفئة",
 	"meta_universe": "الكون", 
 	"meta_campaigns": "الحملات",
+	"intro_title": "حول هذا الخط الزمني", 
+	"intro_expand": "توسيع",
+	"intro_collapse": "طي",
+	"intro_text": "هذا هو التاريخ الزمني الرسمي لبلد ويزنوث والمناطق المحيطة به، مستخلص من الروايات المكتوبة والتواريخ الشفهية التي تم تناقلها عبر الأجيال. الأجزاء المحاطة بأقواس وتحتوي على علامة استفهام هي معلومات مفترضة أو غير مؤكدة. يتم ترتيب التاريخ حسب العصر، وداخل العصر حسب التاريخ، باستخدام تأسيس ويزنوث كأساس. BW = قبل ويزنوث، YW = سنوات ويزنوث. تعمل بنفس الطريقة التي تعمل بها BC و AD في نظام حفظ الوقت لدينا. يتم تلخيص كل عصر قبل أن يبدأ الخط الزمني لذلك العصر. تاريخ القارة العظمى هو موضوع للدراسة النشطة.",
+	"intro_text_2": "العالم الذي تقيم فيه ويزنوث يسمى إيرديا. قبل السقوط العظيم والعصر التكنولوجي (غير المسجل)، نادرًا ما يتم استخدام هذا الاسم.",
+	"spoiler_warning": "تحذير spoiler! تحتوي هذه الصفحة على spoilers للحبكة لعدة حملات.",
 	
 	// Campaign names
 	"campaign_the_rise_of_wesnoth": "صعود ويزنوث",
@@ -45,6 +104,25 @@ const translations_ar = {
 	"campaign_eastern_invasion": "الغزو الشرقي",
 	"campaign_dead_water": "المياه الميتة",
 	"campaign_under_the_burning_suns": "تحت الشمس الحارقة",
+	
+	//  Era translations
+	"general_eras_title": "العصور العامة",
+	"eras_expand": "توسيع",
+	"eras_collapse": "طي",
+	"era_expand": "توسيع",
+	"era_collapse": "طي",
+	"coming_soon": "قريباً",
+	
+	// Era titles
+	"era_founding_title": "تأسيس ويزنوث",
+	"era_taming_title": "ترويح البرية",
+	"era_golden_age_title": "العصر الذهبي لويزنوث",
+	"era_first_dark_age_title": "العصر المظلم الأول لويزنوث",
+	"era_turmoil_title": "اضطرابات آشيفير",
+	"era_fear_title": "عصر الخوف",
+	"era_silver_age_title": "العصر الفضي لويزنوث", 
+	"era_legacy_title": "إرث كارون العين السوداء",
+	"era_after_fall_title": "بعد السقوط العظيم",
 	
 	// Eras
 	"era_founding_title": "تأسيس ويزنوث",

@@ -26,8 +26,17 @@ async function initializePage() {
     // FIXED: Apply filters automatically on page load
     applyFilters();
     
+    // Initialize introduction section
+    initializeIntroduction();
+    
+    // Initialize eras section
+    initializeErasSection();
+    
     // Initialize icons manager first
     await WTLIconsManager.init(timelineData);
+    
+    // Initialize How To modal
+    initializeHowToModal();
     
     // Apply translations (this won't affect timeline descriptions)
     applyTranslations();
@@ -46,6 +55,109 @@ async function initializePage() {
     
     // Initialize sync features
     initializeSyncFeatures();
+}
+
+
+// Function to initialize How To modal
+function initializeHowToModal() {
+    const modal = document.getElementById('howToModal');
+    const btn = document.getElementById('howToBtn');
+    const closeBtn = document.getElementById('howToModalClose');
+    const tabs = document.querySelectorAll('.WTL-timeline-manager-modal-tab');
+    const tabPanes = document.querySelectorAll('.WTL-timeline-manager-tab-pane');
+
+    // Open modal
+    btn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Tab switching
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabId = tab.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and panes
+            tabs.forEach(t => t.classList.remove('active'));
+            tabPanes.forEach(pane => pane.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding pane
+            tab.classList.add('active');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+}
+
+// Function to initialize eras section
+function initializeErasSection() {
+    const erasToggle = document.getElementById('erasToggle');
+    const erasContent = document.getElementById('erasContent');
+    
+    if (erasToggle && erasContent) {
+        erasToggle.addEventListener('click', function() {
+            const isExpanded = erasContent.classList.toggle('WTL-timeline-manager-expanded');
+            erasToggle.setAttribute('data-i18n', isExpanded ? 'eras_collapse' : 'eras_expand');
+            
+            if (translations[currentLanguage]) {
+                erasToggle.textContent = translations[currentLanguage][isExpanded ? 'eras_collapse' : 'eras_expand'];
+            }
+        });
+    }
+    
+    // Initialize individual era toggles
+    const eraToggles = document.querySelectorAll('.WTL-timeline-manager-era-toggle');
+    eraToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const eraSection = this.closest('.WTL-timeline-manager-era-section');
+            const eraContent = eraSection.querySelector('.WTL-timeline-manager-era-content');
+            const isExpanded = eraContent.classList.toggle('WTL-timeline-manager-expanded');
+            
+            this.setAttribute('data-i18n', isExpanded ? 'era_collapse' : 'era_expand');
+            
+            if (translations[currentLanguage]) {
+                this.textContent = translations[currentLanguage][isExpanded ? 'era_collapse' : 'era_expand'];
+            }
+        });
+    });
+}
+
+// Function to initialize introduction section
+function initializeIntroduction() {
+    const introToggle = document.getElementById('introToggle');
+    const introContent = document.getElementById('introContent');
+    
+    if (introToggle && introContent) {
+        introToggle.addEventListener('click', function() {
+            const isExpanded = introContent.classList.toggle('WTL-timeline-manager-expanded');
+            introToggle.setAttribute('data-i18n', isExpanded ? 'intro_collapse' : 'intro_expand');
+            
+            if (translations[currentLanguage]) {
+                introToggle.textContent = translations[currentLanguage][isExpanded ? 'intro_collapse' : 'intro_expand'];
+            }
+        });
+    }
 }
 
 // Initialize sync features

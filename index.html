@@ -51,8 +51,14 @@
 					</div>
 				</div>
 			</div>
+<div class="WTL-timeline-manager-howto-selector">
+    <button class="WTL-timeline-manager-howto-btn" id="howToBtn">
+        <i class="fas fa-question-circle"></i>
+        <span data-i18n="how_to_title">How To</span>
+    </button>
+</div>
 			
-			<!-- Nouvelle section pour les filtres -->
+			<!--  section pour les filtres -->
 			<div class="WTL-timeline-manager-filters-section">
 				<div class="WTL-timeline-manager-filters-header">
 					<h3 class="WTL-timeline-manager-filters-title" data-i18n="filters_title">Filtrer les événements</h3>
@@ -88,6 +94,18 @@
 				</div>
 			</div>
 			
+			<div class="WTL-timeline-manager-intro-section">
+				<div class="WTL-timeline-manager-intro-header">
+					<h3 class="WTL-timeline-manager-intro-title" data-i18n="intro_title">About This Timeline</h3>
+					<button class="WTL-timeline-manager-intro-toggle" id="introToggle" data-i18n="intro_expand">Expand</button>
+				</div>
+				<div class="WTL-timeline-manager-intro-content" id="introContent">
+					<p data-i18n="intro_text">This is a official chronological history of the country of Wesnoth and surrounding regions, gleaned from written accounts and verbal histories passed down through the generations. Portions of entries surrounded by parentheses and containing a question mark are assumed or unconfirmed information. The history is sorted by era, and within the era by date, using the Foundation of Wesnoth as a base. BW=Before Wesnoth, YW=Years Wesnoth. They function the same way as BC and AD do in our timekeeping system. Each of the eras is summarized before the timeline for that era begins. This history of the Great Continent is a subject of active scholarship.</p>
+					<p data-i18n="intro_text_2">The world that Wesnoth resides in is called Irdya. Before the Great Fall and the (unchronicled) technological age, this name is only rarely used.</p>
+					<p class="WTL-timeline-manager-spoiler-warning" data-i18n="spoiler_warning">Spoiler warning! This page contains plot spoilers to several campaigns.</p>
+				</div>
+			</div>
+			
 			<!-- Section pour les mots-clés -->
 			<div class="WTL-timeline-manager-keywords-section">
 				<h3 class="WTL-timeline-manager-keywords-title" data-i18n="keywords_title">Filtrer par mots-clés</h3>
@@ -100,11 +118,107 @@
 				</div>
 			</div>
 			
-			<div class="WTL-timeline-manager-era-section">
-				<h2 class="WTL-timeline-manager-era-title" data-i18n="era_founding_title">La Fondation de Wesnoth</h2>
-				<p class="WTL-timeline-manager-era-description" data-i18n="era_founding_description">
-					Pendant l'âge de la Fondation de Wesnoth, il y avait deux localisations géographiques importantes, l'Île Verte et le Grand Continent. <span class="WTL-timeline-manager-person" data-person="Haldric">Haldric</span> est la principale figure historique de cette époque. Cet âge se termine avec la fondation de Wesnoth en tant que pays sur le Grand Continent, et avec les orcs attaquant à la fois les elfes et les humains depuis la mer.
-				</p>
+			<!-- Nouvelle section pour les ères générales -->
+			<div class="WTL-timeline-manager-eras-section">
+				<div class="WTL-timeline-manager-eras-header">
+					<h2 class="WTL-timeline-manager-eras-title" data-i18n="general_eras_title">General Eras</h2>
+					<button class="WTL-timeline-manager-eras-toggle" id="erasToggle" data-i18n="eras_expand">Expand</button>
+				</div>
+				<div class="WTL-timeline-manager-eras-content" id="erasContent">
+					<!-- The Founding of Wesnoth Era -->
+					<div class="WTL-timeline-manager-era-section" id="era_founding">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_founding_title">La Fondation de Wesnoth</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="era_founding_description">
+								Pendant l'âge de la Fondation de Wesnoth, il y avait deux localisations géographiques importantes, l'Île Verte et le Grand Continent. <span class="WTL-timeline-manager-person" data-person="Haldric">Haldric</span> est la principale figure historique de cette époque. Cet âge se termine avec la fondation de Wesnoth en tant que pays sur le Grand Continent, et avec les orcs attaquant à la fois les elfes et les humains depuis la mer.
+							</p>
+						</div>
+					</div>
+					
+					<!-- Other Eras -->
+					<div class="WTL-timeline-manager-era-section" id="era_taming">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_taming_title">The Taming of the Wild</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+					
+					<div class="WTL-timeline-manager-era-section" id="era_golden_age">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_golden_age_title">The Golden Age of Wesnoth</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+					
+					<div class="WTL-timeline-manager-era-section" id="era_first_dark_age">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_first_dark_age_title">The First Dark Age of Wesnoth</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+					
+					<div class="WTL-timeline-manager-era-section" id="era_turmoil">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_turmoil_title">The Turmoil of Asheviere</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+					
+					<div class="WTL-timeline-manager-era-section" id="era_fear">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_fear_title">The Age of Fear</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+					
+					<div class="WTL-timeline-manager-era-section" id="era_silver_age">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_silver_age_title">The Silver Age of Wesnoth</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+					
+					<div class="WTL-timeline-manager-era-section" id="era_legacy">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_legacy_title">The Legacy of Black-Eye Karun</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+					
+					<div class="WTL-timeline-manager-era-section" id="era_after_fall">
+						<div class="WTL-timeline-manager-era-header">
+							<h3 class="WTL-timeline-manager-era-title" data-i18n="era_after_fall_title">After the Great Fall</h3>
+							<button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand">Expand</button>
+						</div>
+						<div class="WTL-timeline-manager-era-content">
+							<p class="WTL-timeline-manager-era-description" data-i18n="coming_soon">Coming Soon</p>
+						</div>
+					</div>
+				</div>
 			</div>
 			
 			<div class="WTL-timeline-manager-timeline" id="timeline">
@@ -116,6 +230,240 @@
 			</footer>
 		</div>
 		
+<!-- How To Modal -->
+<div id="howToModal" class="WTL-timeline-manager-modal">
+    <div class="WTL-timeline-manager-modal-content">
+        <div class="WTL-timeline-manager-modal-header">
+            <h2 data-i18n="how_to_modal_title">How To Guide</h2>
+            <button class="WTL-timeline-manager-modal-close" id="howToModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="WTL-timeline-manager-modal-body">
+            <!-- Navigation Tabs -->
+            <div class="WTL-timeline-manager-modal-tabs">
+                <button class="WTL-timeline-manager-modal-tab active" data-tab="language">
+                    <i class="fas fa-language"></i>
+                    <span data-i18n="how_to_tab_language">Add Language</span>
+                </button>
+                <button class="WTL-timeline-manager-modal-tab" data-tab="era">
+                    <i class="fas fa-history"></i>
+                    <span data-i18n="how_to_tab_era">Add Era</span>
+                </button>
+                <button class="WTL-timeline-manager-modal-tab" data-tab="event">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span data-i18n="how_to_tab_event">Add Event</span>
+                </button>
+                <button class="WTL-timeline-manager-modal-tab" data-tab="filter">
+                    <i class="fas fa-filter"></i>
+                    <span data-i18n="how_to_tab_filter">Add Filter</span>
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="WTL-timeline-manager-modal-tab-content">
+                <!-- Language Tab -->
+                <div class="WTL-timeline-manager-tab-pane active" id="language-tab">
+                    <h3 data-i18n="how_to_language_title">How to Add a New Language</h3>
+                    <div class="WTL-timeline-manager-steps">
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">1</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_language_step1_title">Create Language File</h4>
+                                <p data-i18n="how_to_language_step1_desc">Create a new JavaScript file in the <code>scripts/lang/</code> directory named with the language code (e.g., <code>es.js</code> for Spanish).</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>const translations_es = {
+    "timeline_title": "Cronología de Wesnoth",
+    "timeline_subtitle": "Explora la historia cronológica del reino de Wesnoth y las regiones circundantes",
+    // ... add all translation keys
+};</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">2</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_language_step2_title">Update HTML</h4>
+                                <p data-i18n="how_to_language_step2_desc">Add the language option to the language selector in <code>index.html</code>:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>&lt;select class="WTL-timeline-manager-select" id="languageSelect"&gt;
+    &lt;option value="en"&gt;English&lt;/option&gt;
+    &lt;option value="fr"&gt;Français&lt;/option&gt;
+    &lt;option value="es"&gt;Español&lt;/option&gt; &lt;!-- New option --&gt;
+&lt;/select&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">3</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_language_step3_title">Register Language</h4>
+                                <p data-i18n="how_to_language_step3_desc">Add the language to the translations object in <code>translation-manager.js</code>:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>const translations = {
+    en: translations_en,
+    fr: translations_fr,
+    it: translations_it,
+    ar: translations_ar,
+    es: translations_es  // New language
+};</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="WTL-timeline-manager-recommendations">
+                        <h4 data-i18n="how_to_recommendations">Recommendations</h4>
+                        <ul>
+                            <li data-i18n="how_to_language_rec1">Use ISO language codes for file names</li>
+                            <li data-i18n="how_to_language_rec2">Keep all translation keys consistent across languages</li>
+                            <li data-i18n="how_to_language_rec3">Test right-to-left layouts for languages like Arabic</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Era Tab -->
+                <div class="WTL-timeline-manager-tab-pane" id="era-tab">
+                    <h3 data-i18n="how_to_era_title">How to Add a New Era</h3>
+                    <div class="WTL-timeline-manager-steps">
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">1</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_era_step1_title">Add Era Section in HTML</h4>
+                                <p data-i18n="how_to_era_step1_desc">Add a new era section in the <code>index.html</code> file within the eras content:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>&lt;div class="WTL-timeline-manager-era-section" id="era_your_era"&gt;
+    &lt;div class="WTL-timeline-manager-era-header"&gt;
+        &lt;h3 class="WTL-timeline-manager-era-title" data-i18n="era_your_era_title"&gt;Your Era Title&lt;/h3&gt;
+        &lt;button class="WTL-timeline-manager-era-toggle" data-i18n="era_expand"&gt;Expand&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="WTL-timeline-manager-era-content"&gt;
+        &lt;p class="WTL-timeline-manager-era-description" data-i18n="era_your_era_description"&gt;
+            Era description goes here...
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">2</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_era_step2_title">Add Translations</h4>
+                                <p data-i18n="how_to_era_step2_desc">Add translation keys for the new era in all language files:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>// In each language file (en.js, fr.js, etc.)
+"era_your_era_title": "Your Era Title",
+"era_your_era_description": "Detailed description of your era..."</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="WTL-timeline-manager-recommendations">
+                        <h4 data-i18n="how_to_recommendations">Recommendations</h4>
+                        <ul>
+                            <li data-i18n="how_to_era_rec1">Use consistent naming for era IDs</li>
+                            <li data-i18n="how_to_era_rec2">Include rich HTML content in descriptions</li>
+                            <li data-i18n="how_to_era_rec3">Add appropriate icons for visual consistency</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Event Tab -->
+                <div class="WTL-timeline-manager-tab-pane" id="event-tab">
+                    <h3 data-i18n="how_to_event_title">How to Add a New Timeline Event</h3>
+                    <div class="WTL-timeline-manager-steps">
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">1</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_event_step1_title">Add Event Data</h4>
+                                <p data-i18n="how_to_event_step1_desc">Add a new event object to the <code>timelineData</code> array in <code>timeline-data.js</code>:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>{
+    year: "25 YW",
+    title: "Your Event Title",
+    description: "Event description with &lt;span class='WTL-timeline-manager-person'&gt;highlighted elements&lt;/span&gt;",
+    icon: "fa-your-icon",
+    era: "founding",
+    translationKey: "your_event_key",
+    category: "mainline",
+    related_campaign_events: ["The Rise of Wesnoth"],
+    univers: "wesnoth"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">2</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_event_step2_title">Add Translations</h4>
+                                <p data-i18n="how_to_event_step2_desc">Add translation keys for the event in all language files:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>"your_event_key_title": "Your Event Title",
+"your_event_key_desc": "Translated event description..."</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="WTL-timeline-manager-recommendations">
+                        <h4 data-i18n="how_to_recommendations">Recommendations</h4>
+                        <ul>
+                            <li data-i18n="how_to_event_rec1">Use consistent translation key patterns</li>
+                            <li data-i18n="how_to_event_rec2">Include proper HTML markup in descriptions</li>
+                            <li data-i18n="how_to_event_rec3">Assign correct era and category values</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Filter Tab -->
+                <div class="WTL-timeline-manager-tab-pane" id="filter-tab">
+                    <h3 data-i18n="how_to_filter_title">How to Add a New Filter</h3>
+                    <div class="WTL-timeline-manager-steps">
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">1</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_filter_step1_title">Update Filter Logic</h4>
+                                <p data-i18n="how_to_filter_step1_desc">Modify the filter functions in <code>timeline-manager.js</code> to handle your new filter type:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>// In initializeFilters() function
+const newFilter = document.getElementById('newFilter');
+newFilter.innerHTML = `
+    &lt;label&gt;&lt;input type="checkbox" name="newfilter" value="all" checked&gt; All&lt;/label&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="newfilter" value="option1"&gt; Option 1&lt;/label&gt;
+`;</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="WTL-timeline-manager-step">
+                            <div class="WTL-timeline-manager-step-number">2</div>
+                            <div class="WTL-timeline-manager-step-content">
+                                <h4 data-i18n="how_to_filter_step2_title">Update Filter Application</h4>
+                                <p data-i18n="how_to_filter_step2_desc">Update the <code>applyFilters()</code> and <code>passesFilters()</code> functions to include your new filter:</p>
+                                <div class="WTL-timeline-manager-code-block">
+                                    <pre><code>// In applyFilters()
+const newFilterCheckboxes = document.querySelectorAll('input[name="newfilter"]:checked');
+activeFilters.newfilter = Array.from(newFilterCheckboxes).map(cb => cb.value);
+
+// In passesFilters()
+if (!activeFilters.newfilter.includes('all')) {
+    // Your filter logic here
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="WTL-timeline-manager-recommendations">
+                        <h4 data-i18n="how_to_recommendations">Recommendations</h4>
+                        <ul>
+                            <li data-i18n="how_to_filter_rec1">Use descriptive filter names</li>
+                            <li data-i18n="how_to_filter_rec2">Test filter combinations thoroughly</li>
+                            <li data-i18n="how_to_filter_rec3">Ensure proper state management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 		<!-- PWA Installation Prompt -->
 		<div id="pwaInstallPrompt" class="WTL-timeline-manager-pwa-prompt" style="display: none;">
 			<div class="WTL-timeline-manager-pwa-content">

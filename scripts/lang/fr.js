@@ -15,6 +15,59 @@ const translations_fr = {
     "filters_collapse": "Réduire",
     "filter_all": "Tous",
     "filter_other": "Autre",
+	"how_to_title": "Comment faire",
+	"how_to_modal_title": "Guide pratique",
+	
+	// Titres des onglets
+	"how_to_tab_language": "Ajouter une langue",
+	"how_to_tab_era": "Ajouter une époque",
+	"how_to_tab_event": "Ajouter un événement", 
+	"how_to_tab_filter": "Ajouter un filtre",
+	
+	// Section Langue
+	"how_to_language_title": "Comment ajouter une nouvelle langue",
+	"how_to_language_step1_title": "Créer un fichier de langue",
+	"how_to_language_step1_desc": "Créez un nouveau fichier JavaScript dans le dossier scripts/lang/ avec le code de la langue (ex: fr.js pour le français).",
+	"how_to_language_step2_title": "Mettre à jour le HTML",
+	"how_to_language_step2_desc": "Ajoutez l'option de langue au sélecteur de langue dans index.html :",
+	"how_to_language_step3_title": "Enregistrer la langue",
+	"how_to_language_step3_desc": "Ajoutez la langue à l'objet translations dans translation-manager.js :",
+	"how_to_language_rec1": "Utilisez les codes ISO pour les noms de fichiers",
+	"how_to_language_rec2": "Maintenez des clés de traduction cohérentes entre les langues",
+	"how_to_language_rec3": "Testez les dispositions de droite à gauche pour les langues comme l'arabe",
+	
+	// Section Époque
+	"how_to_era_title": "Comment ajouter une nouvelle époque",
+	"how_to_era_step1_title": "Ajouter une section époque dans le HTML",
+	"how_to_era_step1_desc": "Ajoutez une nouvelle section époque dans le fichier index.html dans le contenu des époques :",
+	"how_to_era_step2_title": "Ajouter les traductions",
+	"how_to_era_step2_desc": "Ajoutez les clés de traduction pour la nouvelle époque dans tous les fichiers de langue :",
+	"how_to_era_rec1": "Utilisez une nomenclature cohérente pour les ID d'époque",
+	"how_to_era_rec2": "Incluez du contenu HTML riche dans les descriptions",
+	"how_to_era_rec3": "Ajoutez des icônes appropriées pour une cohérence visuelle",
+	
+	// Section Événement
+	"how_to_event_title": "Comment ajouter un nouvel événement chronologique",
+	"how_to_event_step1_title": "Ajouter des données d'événement",
+	"how_to_event_step1_desc": "Ajoutez un nouvel objet événement au tableau timelineData dans timeline-data.js :",
+	"how_to_event_step2_title": "Ajouter les traductions",
+	"how_to_event_step2_desc": "Ajoutez les clés de traduction pour l'événement dans tous les fichiers de langue :",
+	"how_to_event_rec1": "Utilisez des modèles de clés de traduction cohérents",
+	"how_to_event_rec2": "Incluez un balisage HTML approprié dans les descriptions",
+	"how_to_event_rec3": "Attribuez les valeurs correctes d'époque et de catégorie",
+	
+	// Section Filtre
+	"how_to_filter_title": "Comment ajouter un nouveau filtre",
+	"how_to_filter_step1_title": "Mettre à jour la logique des filtres",
+	"how_to_filter_step1_desc": "Modifiez les fonctions de filtrage dans timeline-manager.js pour gérer votre nouveau type de filtre :",
+	"how_to_filter_step2_title": "Mettre à jour l'application des filtres",
+	"how_to_filter_step2_desc": "Mettez à jour les fonctions applyFilters() et passesFilters() pour inclure votre nouveau filtre :",
+	"how_to_filter_rec1": "Utilisez des noms de filtres descriptifs",
+	"how_to_filter_rec2": "Testez minutieusement les combinaisons de filtres",
+	"how_to_filter_rec3": "Assurez une gestion appropriée des états",
+	
+	// Commun
+	"how_to_recommendations": "Recommandations",
 	
 	// filter translations
 	"filters_title": "Filtrer les événements",
@@ -31,6 +84,12 @@ const translations_fr = {
 	"meta_category": "Catégorie",
 	"meta_universe": "Univers",
 	"meta_campaigns": "Campagnes",
+	"intro_title": "À propos de cette chronologie",
+	"intro_expand": "Développer",
+	"intro_collapse": "Réduire",
+	"intro_text": "Ceci est l'histoire chronologique officielle du pays de Wesnoth et des régions environnantes, recueillie à partir de récits écrits et d'histoires orales transmises à travers les générations. Les parties des entrées entourées de parenthèses et contenant un point d'interrogation sont des informations supposées ou non confirmées. L'histoire est triée par ère, et au sein de l'ère par date, en utilisant la Fondation de Wesnoth comme base. BW = Avant Wesnoth, YW = Années Wesnoth. Elles fonctionnent de la même manière que BC et AD dans notre système de chronologie. Chacune des ères est résumée avant que la chronologie de cette ère ne commence. Cette histoire du Grand Continent fait l'objet de recherches actives.",
+	"intro_text_2": "Le monde dans lequel réside Wesnoth s'appelle Irdya. Avant la Grande Chute et l'ère technologique (non chroniquée), ce nom n'est que rarement utilisé.",
+	"spoiler_warning": "Avertissement spoiler ! Cette page contient des spoilers de l'intrigue de plusieurs campagnes.",
 	
 	// Campaign names
 	"campaign_the_rise_of_wesnoth": "L'Avènement de Wesnoth",
@@ -45,6 +104,25 @@ const translations_fr = {
 	"campaign_eastern_invasion": "Invasion de l'Est",
 	"campaign_dead_water": "Eaux Mortes",
 	"campaign_under_the_burning_suns": "Sous les Soleils Brûlants",
+	
+	//  Era translations
+	"general_eras_title": "Ères Générales",
+	"eras_expand": "Développer",
+	"eras_collapse": "Réduire",
+	"era_expand": "Développer",
+	"era_collapse": "Réduire", 
+	"coming_soon": "Bientôt disponible",
+	
+	// Era titles
+	"era_founding_title": "La Fondation de Wesnoth",
+	"era_taming_title": "L'Apprivoisement de la Nature Sauvage",
+	"era_golden_age_title": "L'Âge d'Or de Wesnoth",
+	"era_first_dark_age_title": "Le Premier Âge Sombre de Wesnoth",
+	"era_turmoil_title": "Les Troubles d'Asheviere", 
+	"era_fear_title": "L'Ère de la Peur",
+	"era_silver_age_title": "L'Âge d'Argent de Wesnoth",
+	"era_legacy_title": "L'Héritage de Karun Œil-Noir",
+	"era_after_fall_title": "Après la Grande Chute",
 	
 	// Eras
 	"era_founding_title": "La Fondation de Wesnoth",
