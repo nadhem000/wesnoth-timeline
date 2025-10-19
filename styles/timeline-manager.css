@@ -1750,3 +1750,87 @@ transition: all 0.3s ease;
         right: 20px;
     }
 }
+
+/* Notification Controls Styles */
+.WTL-timeline-manager-notification-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.WTL-timeline-manager-notification-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.WTL-timeline-manager-notification-status {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.WTL-timeline-manager-notification-status.enabled {
+    background: #4CAF50;
+    color: white;
+}
+
+.WTL-timeline-manager-notification-status.disabled {
+    background: #f44336;
+    color: white;
+}
+
+.WTL-timeline-manager-notification-test-btn {
+    background: #ff9800;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.WTL-timeline-manager-notification-test-btn:hover {
+    background: #f57c00;
+}
+
+/* Sync Button Styles */
+.WTL-timeline-manager-sync-selector {
+    margin: 10px 0;
+}
+
+.WTL-timeline-manager-sync-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.WTL-timeline-manager-sync-btn:hover {
+    background: #1976D2;
+}
+
+/* Dark mode support */
+.WTL-timeline-manager-dark-mode .WTL-timeline-manager-alert-content {
+    background: #2d3748;
+    color: white;
+}
+
+.WTL-timeline-manager-dark-mode .WTL-timeline-manager-alert-content h4 {
+    color: white;
+}
+
+.WTL-timeline-manager-dark-mode .WTL-timeline-manager-alert-content p {
+    color: #e2e8f0;
+}

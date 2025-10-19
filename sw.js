@@ -1,6 +1,6 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.3.4';
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v4';
+const CACHE_NAME = 'wesnoth-timeline-v1.3.5';
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v5';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -69,7 +69,13 @@ self.addEventListener('activate', event => {
                 );
             }),
             // Claim clients immediately
-            self.clients.claim()
+            self.clients.claim(),
+            // Enable navigation preload if supported
+            (() => {
+                if ('navigationPreload' in self.registration) {
+                    return self.registration.navigationPreload.enable();
+                }
+            })()
         ])
     );
 });
