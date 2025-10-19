@@ -1,6 +1,6 @@
 {
 	"name": "wesnoth-timeline",
-	"version": "1.4.2",
+	"version": "1.4.3",
 	"description": "Interactive timeline of Wesnoth history - Progressive Web App",
 	"main": "index.html",
 	"scripts": {

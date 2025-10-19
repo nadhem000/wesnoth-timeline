@@ -1,9 +1,12 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.4.2'; // Updated version
+const CACHE_NAME = 'wesnoth-timeline-v1.4.3'; // Updated version for offline support
 const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v12';
+const OFFLINE_PAGE = '/offline.html';
+
 const urlsToCache = [
     '/',
     '/index.html',
+    '/offline.html', // Added offline page
     '/styles/timeline-manager.css',
     '/scripts/timeline-data.js',
     '/scripts/icons-manager.js',
@@ -89,7 +92,31 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // FIXED: Use a simpler approach without navigation preload
+    // For navigation requests, use a different strategy
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            (async () => {
+                try {
+                    // Try network first for navigation requests
+                    const networkResponse = await fetch(event.request);
+                    return networkResponse;
+                } catch (error) {
+                    // Network failed, try cache
+                    const cachedResponse = await caches.match(event.request);
+                    if (cachedResponse) {
+                        return cachedResponse;
+                    }
+                    
+                    // No cache, return offline page
+                    const offlineResponse = await caches.match(OFFLINE_PAGE);
+                    return offlineResponse;
+                }
+            })()
+        );
+        return;
+    }
+
+    // FIXED: Use a simpler approach without navigation preload for other requests
     event.respondWith(
         (async () => {
             // Try cache first
@@ -115,7 +142,7 @@ self.addEventListener('fetch', event => {
                 
                 // For HTML requests, return offline page
                 if (event.request.destination === 'document') {
-                    const fallback = await caches.match('/index.html');
+                    const fallback = await caches.match(OFFLINE_PAGE);
                     if (fallback) return fallback;
                 }
                 
@@ -320,6 +347,7 @@ self.addEventListener('message', event => {
         );
     }
 });
+
 async function showUpdateNotification(updatedFiles) {
     try {
         const clients = await self.clients.matchAll();
