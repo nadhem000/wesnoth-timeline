@@ -1834,3 +1834,36 @@ transition: all 0.3s ease;
 .WTL-timeline-manager-dark-mode .WTL-timeline-manager-alert-content p {
     color: #e2e8f0;
 }
+
+.WTL-timeline-manager-notification-status {
+    font-size: 0.9em;
+    margin-left: 10px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.WTL-timeline-manager-notification-status.enabled {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.WTL-timeline-manager-notification-status.disabled {
+    background-color: #f44336;
+    color: white;
+}
+
+.WTL-timeline-manager-notification-test-btn {
+    background: var(--WTL-timeline-manager-secondary-color);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 0.9em;
+}
+
+.WTL-timeline-manager-notification-test-btn:hover {
+    background: var(--WTL-timeline-manager-primary-color);
+}

@@ -1,6 +1,6 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.3.9'; // Updated version
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v9';
+const CACHE_NAME = 'wesnoth-timeline-v1.4.0'; // Updated version
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v10';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -234,19 +234,68 @@ async function syncTimelineData() {
     }
 }
 
-self.addEventListener('notificationclick', event => {
-    console.log('Notification clicked');
+// Push event handler for real push notifications
+self.addEventListener('push', function(event) {
+    console.log('Push event received:', event);
+    
+    if (!event.data) {
+        console.log('Push event has no data');
+        return;
+    }
+    
+    try {
+        const data = event.data.json();
+        console.log('Push data:', data);
+        
+        const options = {
+            body: data.body || 'New update from Wesnoth Timeline',
+            icon: '/assets/icons/pwa-icons/icon-192x192.png',
+            badge: '/assets/icons/pwa-icons/icon-72x72.png',
+            tag: 'wesnoth-push',
+            data: {
+                url: data.url || '/'
+            }
+        };
+        
+        event.waitUntil(
+            self.registration.showNotification(data.title || 'Wesnoth Timeline', options)
+        );
+    } catch (error) {
+        console.log('Error parsing push data, showing default notification:', error);
+        
+        const defaultOptions = {
+            body: 'New content is available in Wesnoth Timeline',
+            icon: '/assets/icons/pwa-icons/icon-192x192.png',
+            badge: '/assets/icons/pwa-icons/icon-72x72.png',
+            tag: 'wesnoth-push-default'
+        };
+        
+        event.waitUntil(
+            self.registration.showNotification('Wesnoth Timeline', defaultOptions)
+        );
+    }
+});
+
+
+// Enhanced notification click handler
+self.addEventListener('notificationclick', function(event) {
+    console.log('Notification clicked:', event.notification.tag);
     event.notification.close();
     
+    const urlToOpen = event.notification.data?.url || '/';
+    
     event.waitUntil(
-        clients.matchAll({ type: 'window' }).then(windowClients => {
+        clients.matchAll({type: 'window'}).then(windowClients => {
+            // Check if there is already a window/tab open with the target URL
             for (let client of windowClients) {
                 if (client.url.includes(self.location.origin) && 'focus' in client) {
                     return client.focus();
                 }
             }
+            
+            // If no window is open, open a new one
             if (clients.openWindow) {
-                return clients.openWindow('/');
+                return clients.openWindow(urlToOpen);
             }
         })
     );

@@ -77,58 +77,48 @@ async function initializePage() {
     initializeSyncFeatures();
 }
 
-
 function addNotificationControls() {
     const controls = document.querySelector('.WTL-timeline-manager-controls');
     if (controls && !document.getElementById('notificationToggle')) {
         const notificationContainer = document.createElement('div');
         notificationContainer.className = 'WTL-timeline-manager-notification-selector';
         notificationContainer.innerHTML = `
-		<div class="WTL-timeline-manager-notification-toggle">
-		<span data-i18n="notifications_label">Notifications:</span>
-		<label class="WTL-timeline-manager-switch">
-		<input type="checkbox" id="notificationToggle">
-		<span class="WTL-timeline-manager-slider"></span>
-		</label>
-		<span id="notificationStatus" class="WTL-timeline-manager-notification-status">Checking...</span>
-		</div>
-		<button id="testNotification" class="WTL-timeline-manager-notification-test-btn" title="Test notification">
-		<i class="fas fa-bell"></i>
-		<span>Test</span>
-		</button>
+            <div class="WTL-timeline-manager-notification-toggle">
+                <span>Notifications:</span>
+                <label class="WTL-timeline-manager-switch">
+                    <input type="checkbox" id="notificationToggle">
+                    <span class="WTL-timeline-manager-slider"></span>
+                </label>
+                <span id="notificationStatus" class="WTL-timeline-manager-notification-status">Checking...</span>
+            </div>
+            <button id="testNotification" class="WTL-timeline-manager-notification-test-btn" title="Test notification">
+                <i class="fas fa-bell"></i>
+                <span>Test</span>
+            </button>
         `;
         controls.appendChild(notificationContainer);
         
         // Add event listeners
         document.getElementById('notificationToggle').addEventListener('change', toggleNotifications);
         document.getElementById('testNotification').addEventListener('click', testNotification);
-	}
+    }
 }
 
 async function toggleNotifications() {
     const toggle = document.getElementById('notificationToggle');
     
     if (toggle.checked) {
-        // Enable notifications
         const success = await WTLPushManager.enableNotifications();
         if (!success) {
             toggle.checked = false;
         }
     } else {
-        // Disable notifications
         await WTLPushManager.disableNotifications();
     }
 }
 
 async function testNotification() {
-    const success = await WTLPushManager.testNotification();
-    if (!success) {
-        // Show fallback alert if notifications aren't enabled
-        WTLPushManager.showLocalAlert(
-            'Notifications Disabled', 
-            'Please enable notifications first by toggling the switch above.'
-		);
-	}
+    await WTLPushManager.testNotification();
 }
 
 // function to trigger notifications from other parts of your app
