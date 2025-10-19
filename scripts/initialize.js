@@ -53,10 +53,14 @@ async function initializePage() {
     // Add notification controls to UI
     addNotificationControls();
     
-    // Show permission prompt if needed (after a short delay)
-    setTimeout(() => {
-        WTLPushManager.showPermissionPrompt();
-    }, 3000);
+    // FIXED: Only show permission prompt after Push Manager is fully initialized
+    if (WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
+        setTimeout(() => {
+            if (typeof WTLPushManager.showPermissionPrompt === 'function') {
+                WTLPushManager.showPermissionPrompt();
+            }
+        }, 3000);
+    }
     
     // Add highlight event listeners
     setTimeout(() => {
