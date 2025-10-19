@@ -1,6 +1,6 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.3.2';
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v2';
+const CACHE_NAME = 'wesnoth-timeline-v1.3.3';
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v3';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -9,6 +9,7 @@ const urlsToCache = [
     '/scripts/icons-manager.js',
     '/scripts/translation-manager.js',
     '/scripts/timeline-manager.js',
+    '/scripts/push-manager.js',
     '/scripts/initialize.js',
     '/scripts/lang/en.js',
     '/scripts/lang/fr.js',
@@ -214,6 +215,23 @@ async function syncTimelineData() {
     }
 }
 
+self.addEventListener('notificationclick', event => {
+    console.log('Notification clicked');
+    event.notification.close();
+    
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(windowClients => {
+            for (let client of windowClients) {
+                if (client.url.includes(self.location.origin) && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow('/');
+            }
+        })
+    );
+});
 // Message event handler for client communication
 self.addEventListener('message', event => {
     console.log('Service Worker received message:', event.data);
