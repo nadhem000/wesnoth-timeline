@@ -5,7 +5,10 @@ let currentTheme = 'light';
 async function initializePage() {
     console.log('Initializing page...');
     
-    // Récupérer la langue et le thème sauvegardés
+    // Initialize offline detection FIRST
+    initializeOfflineDetection();
+    
+    // Rest of your existing initialization code...
     const savedLanguage = localStorage.getItem('wesnothLanguage');
     const savedTheme = localStorage.getItem('wesnothTheme');
     
@@ -20,52 +23,44 @@ async function initializePage() {
         updateTheme();
     }
     
-    // Initialize filters
-    initializeFilters();
-    
-    // FIXED: Apply filters automatically on page load
-    applyFilters();
-    
-    // Initialize introduction section
-    initializeIntroduction();
-    
-    // Initialize eras section
-    initializeErasSection();
-    
-    // Initialize icons manager first
-    await WTLIconsManager.init(timelineData);
-    
-    // Initialize How To modal
-    initializeHowToModal();
-    
-    // Apply translations (this won't affect timeline descriptions)
-    applyTranslations();
-    
-    // Generate keywords from the rendered HTML
-    generateKeywords();
-    
-    // Add event listeners
-    addEventListeners();
-    
-    // Initialize simple push notifications
-    await WTLPushManager.init();
-    
-    // Add notification controls to UI
-    addNotificationControls();
-    
-    // FIXED: Only show permission prompt after Push Manager is fully initialized
-    // and only if user hasn't made a choice recently
-    const promptDeferred = localStorage.getItem('wesnothNotificationPromptDeferred');
-    if (WTLPushManager.isSupported && 
-        WTLPushManager.permissionState === 'default' && 
-        !promptDeferred) {
-        setTimeout(() => {
-            if (WTLPushManager && typeof WTLPushManager.showPermissionPrompt === 'function' && 
-                WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
-                WTLPushManager.showPermissionPrompt();
-            }
-        }, 3000);
+    // Only initialize online features if we're online
+    if (navigator.onLine) {
+        initializeFilters();
+        applyFilters();
+        initializeSyncFeatures();
+        
+        // Initialize push notifications only when online
+        await WTLPushManager.init();
+        addNotificationControls();
+        
+        const promptDeferred = localStorage.getItem('wesnothNotificationPromptDeferred');
+        if (WTLPushManager.isSupported && 
+            WTLPushManager.permissionState === 'default' && 
+            !promptDeferred) {
+            setTimeout(() => {
+                if (WTLPushManager && typeof WTLPushManager.showPermissionPrompt === 'function' && 
+                    WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
+                    WTLPushManager.showPermissionPrompt();
+                }
+            }, 3000);
+        }
+    } else {
+        // If offline, still initialize basic filters but skip online-dependent features
+        initializeFilters();
+        applyFilters();
+        
+        // Show a message that we're using cached content
+        console.log('Offline: Using cached timeline data');
     }
+    
+    // These can work offline as they use cached data
+    initializeIntroduction();
+    initializeErasSection();
+    await WTLIconsManager.init(timelineData);
+    initializeHowToModal();
+    applyTranslations();
+    generateKeywords();
+    addEventListeners();
     
     // Add highlight event listeners
     setTimeout(() => {
@@ -73,8 +68,58 @@ async function initializePage() {
         addHighlightEventListeners();
     }, 500);
     
-    // Initialize sync features
-    initializeSyncFeatures();
+    // Test function (can work offline)
+    testHighlightFeature();
+}
+// Offline functionality
+function initializeOfflineDetection() {
+    const offlineBanner = document.getElementById('offlineBanner');
+    const offlineInfo = document.getElementById('offlineInfo');
+    
+    if (!offlineBanner) return;
+    
+    // Check initial online status
+    updateOnlineStatus();
+    
+    // Listen for online/offline events
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    // Function to update UI based on online status
+    function updateOnlineStatus() {
+        const isOnline = navigator.onLine;
+        
+        if (isOnline) {
+            // Hide offline banner
+            offlineBanner.style.display = 'none';
+            // Hide offline info if it was shown
+            offlineInfo.style.display = 'none';
+            
+            // Re-enable sync features if needed
+            if ('serviceWorker' in navigator) {
+                initializeSyncFeatures();
+            }
+            
+        } else {
+            // Show offline banner
+            offlineBanner.style.display = 'flex';
+            
+            // Disable push notifications and sync
+            if (window.WTLPushManager) {
+                WTLPushManager.notificationsEnabled = false;
+                WTLPushManager.updateUIState('offline');
+            }
+            
+            // Show cached content is available
+            console.log('Offline mode: Using cached content');
+        }
+    }
+    
+    // Optional: Add click handler to show detailed offline info
+    offlineBanner.addEventListener('click', function() {
+        const isCurrentlyVisible = offlineInfo.style.display !== 'none';
+        offlineInfo.style.display = isCurrentlyVisible ? 'none' : 'block';
+    });
 }
 
 function addNotificationControls() {

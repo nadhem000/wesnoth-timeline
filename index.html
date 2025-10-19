@@ -24,6 +24,30 @@
 		<link rel="stylesheet" href="styles/timeline-manager.css">
 	</head>
 	<body>
+
+<!-- Offline Banner -->
+<div id="offlineBanner" class="WTL-timeline-manager-offline-banner" style="display: none;">
+    <i class="fas fa-wifi"></i>
+    <span data-i18n="offline_message">You are currently offline. Working with cached content.</span>
+</div>
+
+<!-- Offline Info Section (shown when intentionally viewing offline info) -->
+<div id="offlineInfo" class="WTL-timeline-manager-offline-info" style="display: none;">
+    <div class="WTL-timeline-manager-offline-card">
+        <i class="fas fa-wifi-slash"></i>
+        <h3 data-i18n="offline_mode_title">Offline Mode</h3>
+        <p data-i18n="offline_mode_description">You're currently viewing cached content. Some features may be limited:</p>
+        <ul>
+            <li data-i18n="offline_feature_cache">✓ Timeline content available from cache</li>
+            <li data-i18n="offline_feature_filters">✓ Filters and search work normally</li>
+            <li data-i18n="offline_feature_theme">✓ Theme and language settings saved locally</li>
+            <li data-i18n="offline_feature_no_push">✗ Push notifications unavailable</li>
+            <li data-i18n="offline_feature_no_sync">✗ Background sync unavailable</li>
+            <li data-i18n="offline_feature_no_updates">✗ Real-time updates unavailable</li>
+        </ul>
+        <p data-i18n="offline_reconnection">Full functionality will resume when you're back online.</p>
+    </div>
+</div>
 		<div class="WTL-timeline-manager-container">
 			<header class="WTL-timeline-manager-header">
 				<h1 class="WTL-timeline-manager-h1" data-i18n="timeline_title">Chronologie Wesnoth</h1>

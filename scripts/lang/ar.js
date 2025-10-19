@@ -32,6 +32,16 @@ const translations_ar = {
 	"notification_update_body": "محتوى تاريخي جديد متاح",
 	"notification_digest_title": "ملخص Wesnoth",
 	"notification_digest_body": "اطلع على الأحداث التاريخية المميزة اليوم",
+	"offline_message": "أنت غير متصل بالإنترنت حالياً. جارٍ استخدام المحتوى المخزن مؤقتاً.",
+	"offline_mode_title": "وضع عدم الاتصال",
+	"offline_mode_description": "أنت تشاهد حالياً محتوى مخزناً مؤقتاً. قد تكون بعض الميزات محدودة:",
+	"offline_feature_cache": "✓ محتوى الجدول الزمني متاح في الذاكرة المخبأة",
+	"offline_feature_filters": "✓ عوامل التصفية والبحث تعمل بشكل طبيعي",
+	"offline_feature_theme": "✓ إعدادات السمة واللغة محفوظة محلياً",
+	"offline_feature_no_push": "✗ الإشعارات الفورية غير متاحة",
+	"offline_feature_no_sync": "✗ المزامنة في الخلفية غير متاحة", 
+	"offline_feature_no_updates": "✗ التحديثات الفورية غير متاحة",
+	"offline_reconnection": "ستستأنف جميع الميزات العمل عندما تعود إلى الاتصال بالإنترنت.",
 	
 	// عناوين الألسنة
 	"how_to_tab_language": "إضافة لغة",

@@ -1870,7 +1870,7 @@ transition: all 0.3s ease;
 
 /* Offline Banner */
 .WTL-timeline-manager-offline-banner {
-    background: #ff9800;
+    background: linear-gradient(135deg, #ff9800, #f57c00);
     color: white;
     padding: 12px 20px;
     text-align: center;
@@ -1879,7 +1879,11 @@ transition: all 0.3s ease;
     justify-content: center;
     gap: 10px;
     font-weight: 500;
-    border-bottom: 2px solid #f57c00;
+    border-bottom: 2px solid #e65100;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .WTL-timeline-manager-offline-banner i {
@@ -1895,51 +1899,70 @@ transition: all 0.3s ease;
 
 .WTL-timeline-manager-offline-card {
     background: var(--WTL-timeline-manager-card-bg);
-    border: 1px solid var(--WTL-timeline-manager-border-color);
-    border-radius: 8px;
+    border: 2px solid #ff9800;
+    border-radius: 12px;
     padding: 30px;
     text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.2);
 }
 
 .WTL-timeline-manager-offline-card i {
-    font-size: 48px;
-    color: #666;
+    font-size: 64px;
+    color: #ff9800;
     margin-bottom: 20px;
 }
 
 .WTL-timeline-manager-offline-card h3 {
     color: var(--WTL-timeline-manager-text-color);
-    margin-bottom: 15px;
-    font-size: 1.5em;
+    margin-bottom: 20px;
+    font-size: 1.8em;
 }
 
 .WTL-timeline-manager-offline-card p {
     color: var(--WTL-timeline-manager-text-color);
     margin-bottom: 15px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .WTL-timeline-manager-offline-card ul {
     text-align: left;
-    margin: 15px 0;
+    margin: 20px 0;
     padding-left: 20px;
 }
 
 .WTL-timeline-manager-offline-card li {
     color: var(--WTL-timeline-manager-text-color);
-    margin-bottom: 8px;
-    line-height: 1.4;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    padding-left: 5px;
 }
 
 /* Dark mode support for offline elements */
 .WTL-timeline-manager-dark-mode .WTL-timeline-manager-offline-card {
     background: var(--WTL-timeline-manager-card-bg);
-    border-color: var(--WTL-timeline-manager-border-color);
+    border-color: #ffb74d;
 }
 
 .WTL-timeline-manager-dark-mode .WTL-timeline-manager-offline-card h3,
 .WTL-timeline-manager-dark-mode .WTL-timeline-manager-offline-card p,
 .WTL-timeline-manager-dark-mode .WTL-timeline-manager-offline-card li {
     color: var(--WTL-timeline-manager-text-color);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .WTL-timeline-manager-offline-banner {
+        padding: 10px 15px;
+        font-size: 14px;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .WTL-timeline-manager-offline-card {
+        padding: 20px;
+    }
+    
+    .WTL-timeline-manager-offline-card i {
+        font-size: 48px;
+    }
 }

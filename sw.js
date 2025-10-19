@@ -1,12 +1,9 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.4.3'; // Updated version for offline support
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v12';
-const OFFLINE_URL = '/offline.html';
-
+const CACHE_NAME = 'wesnoth-timeline-v1.4.5'; // Updated version
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v15';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/offline.html', // Add offline page to cache
     '/styles/timeline-manager.css',
     '/scripts/timeline-data.js',
     '/scripts/icons-manager.js',
@@ -48,11 +45,11 @@ self.addEventListener('install', event => {
         .then(cache => {
             console.log('Opened cache');
             return cache.addAll(urlsToCache.map(url => new Request(url, {cache: 'reload'})));
-        })
+		})
         .catch(error => {
             console.log('Cache addAll failed:', error);
-        })
-    );
+		})
+	);
 });
 
 // Activate event
@@ -67,10 +64,10 @@ self.addEventListener('activate', event => {
                         if (cacheName !== CACHE_NAME && cacheName !== SYNC_CACHE_NAME) {
                             console.log('Deleting old cache:', cacheName);
                             return caches.delete(cacheName);
-                        }
-                    })
-                );
-            }),
+						}
+					})
+				);
+			}),
             // Claim clients immediately
             self.clients.claim(),
             // FIXED: Remove navigation preload for now to avoid the error
@@ -79,10 +76,10 @@ self.addEventListener('activate', event => {
                 if ('navigationPreload' in self.registration) {
                     // We're not using navigation preload currently, so we can disable it
                     return self.registration.navigationPreload.disable();
-                }
-            })()
-        ])
-    );
+				}
+			})()
+		])
+	);
 });
 
 // Enhanced Fetch event with Cache First then Network strategy
@@ -90,8 +87,8 @@ self.addEventListener('fetch', event => {
     // Skip non-GET requests and chrome-extension requests
     if (event.request.method !== 'GET' || event.request.url.startsWith('chrome-extension://')) {
         return;
-    }
-
+	}
+	
     // FIXED: Use a simpler approach without navigation preload
     event.respondWith(
         (async () => {
@@ -101,8 +98,8 @@ self.addEventListener('fetch', event => {
                 // Return cached version but update cache in background
                 updateCacheInBackground(event.request);
                 return cachedResponse;
-            }
-
+			}
+			
             // Not in cache, try network
             try {
                 const networkResponse = await fetch(event.request);
@@ -111,26 +108,25 @@ self.addEventListener('fetch', event => {
                 if (networkResponse.ok) {
                     const cache = await caches.open(CACHE_NAME);
                     await cache.put(event.request, networkResponse.clone());
-                }
+				}
                 return networkResponse;
-            } catch (error) {
+				} catch (error) {
                 console.log('Network failed for:', event.request.url, error);
-                
-                // For HTML requests, return offline page
-                if (event.request.destination === 'document' || 
-                    event.request.headers.get('accept').includes('text/html')) {
-                    const offlinePage = await caches.match(OFFLINE_URL);
-                    if (offlinePage) return offlinePage;
-                }
-                
-                // For other requests, return a fallback
-                return new Response('Network error happened', {
-                    status: 408,
-                    headers: { 'Content-Type': 'text/plain' }
-                });
-            }
-        })()
-    );
+				
+				// For HTML requests, return offline page
+				if (event.request.destination === 'document') {
+					const fallback = await caches.match('/index.html');
+					if (fallback) return fallback;
+				}
+				
+				// For other requests, return a fallback
+				return new Response('Network error happened', {
+					status: 408,
+					headers: { 'Content-Type': 'text/plain' }
+				});
+			}
+		})()
+	);
 });
 
 // Helper function to update cache in background
@@ -140,11 +136,11 @@ async function updateCacheInBackground(request) {
         if (networkResponse.ok) {
             const cache = await caches.open(CACHE_NAME);
             await cache.put(request, networkResponse);
-        }
-    } catch (error) {
+		}
+		} catch (error) {
         // Silent fail - we already have cached version
         console.log('Background cache update failed:', request.url);
-    }
+	}
 }
 
 // Background Sync event
@@ -154,8 +150,8 @@ self.addEventListener('sync', event => {
     if (event.tag === 'background-sync-timeline') {
         event.waitUntil(
             syncTimelineData()
-        );
-    }
+		);
+	}
 });
 
 // Periodic Sync event
@@ -165,8 +161,8 @@ self.addEventListener('periodicsync', event => {
     if (event.tag === 'periodic-sync-timeline') {
         event.waitUntil(
             syncTimelineData()
-        );
-    }
+		);
+	}
 });
 
 // Sync timeline data function
@@ -185,7 +181,7 @@ async function syncTimelineData() {
             '/scripts/lang/fr.js',
             '/scripts/lang/it.js',
             '/scripts/lang/ar.js'
-        ];
+		];
         
         // Check each file for updates
         for (const fileUrl of dataFiles) {
@@ -217,25 +213,25 @@ async function syncTimelineData() {
                                 type: 'DATA_UPDATED',
                                 file: fileUrl,
                                 timestamp: new Date().toISOString()
-                            });
-                        });
-                    }
-                }
-            } catch (error) {
+							});
+						});
+					}
+				}
+				} catch (error) {
                 console.log('Failed to sync file:', fileUrl, error);
-            }
-        }
+			}
+		}
         
         // Show notification if files were updated
         if (updatedFiles.length > 0) {
             await showUpdateNotification(updatedFiles);
-        }
+		}
         
         console.log('Background sync completed');
         
-    } catch (error) {
+		} catch (error) {
         console.log('Background sync failed:', error);
-    }
+	}
 }
 
 // Push event handler for real push notifications
@@ -245,7 +241,7 @@ self.addEventListener('push', function(event) {
     if (!event.data) {
         console.log('Push event has no data');
         return;
-    }
+	}
     
     try {
         const data = event.data.json();
@@ -258,13 +254,13 @@ self.addEventListener('push', function(event) {
             tag: 'wesnoth-push',
             data: {
                 url: data.url || '/'
-            }
-        };
+			}
+		};
         
         event.waitUntil(
             self.registration.showNotification(data.title || 'Wesnoth Timeline', options)
-        );
-    } catch (error) {
+		);
+		} catch (error) {
         console.log('Error parsing push data, showing default notification:', error);
         
         const defaultOptions = {
@@ -272,13 +268,14 @@ self.addEventListener('push', function(event) {
             icon: '/assets/icons/pwa-icons/icon-192x192.png',
             badge: '/assets/icons/pwa-icons/icon-72x72.png',
             tag: 'wesnoth-push-default'
-        };
+		};
         
         event.waitUntil(
             self.registration.showNotification('Wesnoth Timeline', defaultOptions)
-        );
-    }
+		);
+	}
 });
+
 
 // Enhanced notification click handler
 self.addEventListener('notificationclick', function(event) {
@@ -293,15 +290,15 @@ self.addEventListener('notificationclick', function(event) {
             for (let client of windowClients) {
                 if (client.url.includes(self.location.origin) && 'focus' in client) {
                     return client.focus();
-                }
-            }
+				}
+			}
             
             // If no window is open, open a new one
             if (clients.openWindow) {
                 return clients.openWindow(urlToOpen);
-            }
-        })
-    );
+			}
+		})
+	);
 });
 
 // Message event handler for client communication
@@ -310,20 +307,19 @@ self.addEventListener('message', event => {
     
     if (event.data && event.data.type === 'SKIP_WAITING') {
         self.skipWaiting();
-    }
+	}
     
     if (event.data && event.data.type === 'TRIGGER_SYNC') {
         event.waitUntil(
             syncTimelineData().then(() => {
                 // Notify client that sync completed
                 event.ports[0].postMessage({ success: true });
-            }).catch(error => {
+				}).catch(error => {
                 event.ports[0].postMessage({ success: false, error: error.message });
-            })
-        );
-    }
+			})
+		);
+	}
 });
-
 async function showUpdateNotification(updatedFiles) {
     try {
         const clients = await self.clients.matchAll();
@@ -334,18 +330,18 @@ async function showUpdateNotification(updatedFiles) {
                     type: 'SHOW_UPDATE_NOTIFICATION',
                     files: updatedFiles,
                     timestamp: new Date().toISOString()
-                });
-            });
-        } else {
+				});
+			});
+			} else {
             // If no clients are open, show notification directly
             const registration = await self.registration;
             await registration.showNotification('Wesnoth Timeline Updated', {
                 body: `${updatedFiles.length} files have been updated.`,
                 icon: '/assets/icons/pwa-icons/icon-192x192.png',
                 tag: 'timeline-update'
-            });
-        }
-    } catch (error) {
+			});
+		}
+		} catch (error) {
         console.log('Failed to show update notification:', error);
-    }
+	}
 }

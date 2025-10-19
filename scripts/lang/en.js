@@ -32,6 +32,16 @@ const translations_en = {
 	"notification_update_body": "New historical content is available",
 	"notification_digest_title": "Wesnoth Digest",
 	"notification_digest_body": "Check out today's featured historical events",
+	"offline_message": "You are currently offline. Working with cached content.",
+	"offline_mode_title": "Offline Mode",
+	"offline_mode_description": "You're currently viewing cached content. Some features may be limited:",
+	"offline_feature_cache": "✓ Timeline content available from cache",
+	"offline_feature_filters": "✓ Filters and search work normally", 
+	"offline_feature_theme": "✓ Theme and language settings saved locally",
+	"offline_feature_no_push": "✗ Push notifications unavailable",
+	"offline_feature_no_sync": "✗ Background sync unavailable",
+	"offline_feature_no_updates": "✗ Real-time updates unavailable",
+	"offline_reconnection": "Full functionality will resume when you're back online.",
 	
 	// Tab titles
 	"how_to_tab_language": "Add Language",

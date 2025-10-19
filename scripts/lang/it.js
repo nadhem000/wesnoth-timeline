@@ -32,6 +32,16 @@ const translations_it = {
 	"notification_update_body": "Nuovo contenuto storico disponibile",
 	"notification_digest_title": "Riepilogo Wesnoth",
 	"notification_digest_body": "Scopri gli eventi storici in primo piano di oggi",
+	"offline_message": "Sei attualmente offline. Utilizzo dei contenuti nella cache.",
+	"offline_mode_title": "Modalità Offline",
+	"offline_mode_description": "Stai attualmente visualizzando contenuti nella cache. Alcune funzionalità potrebbero essere limitate:",
+	"offline_feature_cache": "✓ Contenuti della timeline disponibili nella cache",
+	"offline_feature_filters": "✓ Filtri e ricerca funzionano normalmente",
+	"offline_feature_theme": "✓ Impostazioni tema e lingua salvate localmente",
+	"offline_feature_no_push": "✗ Notifiche push non disponibili",
+	"offline_feature_no_sync": "✗ Sincronizzazione in background non disponibile",
+	"offline_feature_no_updates": "✗ Aggiornamenti in tempo reale non disponibili",
+	"offline_reconnection": "Tutte le funzionalità riprenderanno quando tornerai online.",
 	
 	// Titoli delle schede
 	"how_to_tab_language": "Aggiungi lingua",

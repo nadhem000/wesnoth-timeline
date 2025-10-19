@@ -32,6 +32,16 @@ const translations_fr = {
 	"notification_update_body": "Nouveau contenu historique disponible",
 	"notification_digest_title": "Résumé Wesnoth",
 	"notification_digest_body": "Découvrez les événements historiques du jour",
+	"offline_message": "Vous êtes actuellement hors ligne. Utilisation du contenu en cache.",
+	"offline_mode_title": "Mode Hors Ligne",
+	"offline_mode_description": "Vous consultez actuellement du contenu en cache. Certaines fonctionnalités peuvent être limitées :",
+	"offline_feature_cache": "✓ Contenu de la chronologie disponible en cache",
+	"offline_feature_filters": "✓ Filtres et recherche fonctionnent normalement",
+	"offline_feature_theme": "✓ Paramètres de thème et de langue sauvegardés localement", 
+	"offline_feature_no_push": "✗ Notifications push non disponibles",
+	"offline_feature_no_sync": "✗ Synchronisation en arrière-plan non disponible",
+	"offline_feature_no_updates": "✗ Mises à jour en temps réel non disponibles",
+	"offline_reconnection": "Toutes les fonctionnalités reprendront lorsque vous serez de nouveau en ligne.",
 	
 	// Titres des onglets
 	"how_to_tab_language": "Ajouter une langue",
