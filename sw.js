@@ -1,12 +1,12 @@
 // Service Worker for Wesnoth Timeline PWA
 const CACHE_NAME = 'wesnoth-timeline-v1.4.3'; // Updated version for offline support
 const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v12';
-const OFFLINE_PAGE = '/offline.html';
+const OFFLINE_URL = '/offline.html';
 
 const urlsToCache = [
     '/',
     '/index.html',
-    '/offline.html', // Added offline page
+    '/offline.html', // Add offline page to cache
     '/styles/timeline-manager.css',
     '/scripts/timeline-data.js',
     '/scripts/icons-manager.js',
@@ -92,31 +92,7 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // For navigation requests, use a different strategy
-    if (event.request.mode === 'navigate') {
-        event.respondWith(
-            (async () => {
-                try {
-                    // Try network first for navigation requests
-                    const networkResponse = await fetch(event.request);
-                    return networkResponse;
-                } catch (error) {
-                    // Network failed, try cache
-                    const cachedResponse = await caches.match(event.request);
-                    if (cachedResponse) {
-                        return cachedResponse;
-                    }
-                    
-                    // No cache, return offline page
-                    const offlineResponse = await caches.match(OFFLINE_PAGE);
-                    return offlineResponse;
-                }
-            })()
-        );
-        return;
-    }
-
-    // FIXED: Use a simpler approach without navigation preload for other requests
+    // FIXED: Use a simpler approach without navigation preload
     event.respondWith(
         (async () => {
             // Try cache first
@@ -141,9 +117,10 @@ self.addEventListener('fetch', event => {
                 console.log('Network failed for:', event.request.url, error);
                 
                 // For HTML requests, return offline page
-                if (event.request.destination === 'document') {
-                    const fallback = await caches.match(OFFLINE_PAGE);
-                    if (fallback) return fallback;
+                if (event.request.destination === 'document' || 
+                    event.request.headers.get('accept').includes('text/html')) {
+                    const offlinePage = await caches.match(OFFLINE_URL);
+                    if (offlinePage) return offlinePage;
                 }
                 
                 // For other requests, return a fallback
@@ -302,7 +279,6 @@ self.addEventListener('push', function(event) {
         );
     }
 });
-
 
 // Enhanced notification click handler
 self.addEventListener('notificationclick', function(event) {

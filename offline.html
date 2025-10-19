@@ -1,113 +1,65 @@
 <!DOCTYPE html>
-<html lang="fr">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="theme-color" content="#162447">
-		<meta name="description" content="Wesnoth Timeline - Offline Mode">
-		
-		<!-- PWA Manifest -->
-		<link rel="manifest" href="/manifest.json">
-		
-		<!-- Apple Touch Icons -->
-		<link rel="apple-touch-icon" href="assets/icons/pwa-icons/icon-152x152.png">
-		<meta name="mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="default">
-		<meta name="apple-mobile-web-app-title" content="Wesnoth Timeline">
-		
-		<title>Wesnoth Timeline - Offline</title>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-		<link rel="stylesheet" href="styles/timeline-manager.css">
-	</head>
-	<body>
-		<div class="WTL-timeline-manager-container">
-			<!-- Offline Notification Banner -->
-			<div class="WTL-timeline-manager-offline-banner">
-				<i class="fas fa-wifi"></i>
-				<span>You are currently offline. Some features may be unavailable.</span>
-			</div>
-			
-			<header class="WTL-timeline-manager-header">
-				<h1 class="WTL-timeline-manager-h1">Wesnoth Timeline</h1>
-				<p class="WTL-timeline-manager-subtitle">Explore the chronological history - Offline Mode</p>
-			</header>
-			
-			<div class="WTL-timeline-manager-offline-info">
-				<div class="WTL-timeline-manager-offline-card">
-					<i class="fas fa-cloud-download-alt"></i>
-					<h3>Offline Mode Active</h3>
-					<p>You're viewing cached content. Some features like:</p>
-					<ul>
-						<li>Background sync</li>
-						<li>Push notifications</li>
-						<li>Real-time updates</li>
-					</ul>
-					<p>will be available when you're back online.</p>
-				</div>
-			</div>
-			
-			<!-- Rest of existing timeline content will be loaded from cache -->
-			<div class="WTL-timeline-manager-controls">
-				<div class="WTL-timeline-manager-language-selector">
-					<span>Language:</span>
-					<select class="WTL-timeline-manager-select" id="languageSelect">
-						<option value="en">English</option>
-						<option value="fr">Français</option>
-						<option value="it">Italiano</option>
-						<option value="ar">العربية</option>
-					</select>
-				</div>
-				<div class="WTL-timeline-manager-theme-selector">
-					<div class="WTL-timeline-manager-theme-toggle">
-						<span>Theme:</span>
-						<label class="WTL-timeline-manager-switch">
-							<input type="checkbox" id="themeToggle">
-							<span class="WTL-timeline-manager-slider"></span>
-						</label>
-						<span id="themeText">Light</span>
-					</div>
-				</div>
-			</div>
-			
-			<!-- existing timeline sections will appear here from cache -->
-			<div id="timeline">
-				<!-- Timeline content loaded from cache -->
-			</div>
-			
-			<footer class="WTL-timeline-manager-footer">
-				<p>Wesnoth Timeline &copy; 2025 - Offline Mode</p>
-			</footer>
-		</div>
-
-		<!-- Simple offline JavaScript -->
-		<script>
-			// Check online status and update UI
-			function updateOnlineStatus() {
-				const banner = document.querySelector('.WTL-timeline-manager-offline-banner');
-				if (!navigator.onLine) {
-					banner.style.display = 'flex';
-				} else {
-					banner.style.display = 'none';
-					// If we come back online, reload to get fresh content
-					setTimeout(() => {
-						window.location.reload();
-					}, 2000);
-				}
-			}
-
-			// Initial check
-			updateOnlineStatus();
-			
-			// Listen for online/offline events
-			window.addEventListener('online', updateOnlineStatus);
-			window.addEventListener('offline', updateOnlineStatus);
-			
-			// Simple theme toggle for offline mode
-			document.getElementById('themeToggle')?.addEventListener('change', function() {
-				document.body.classList.toggle('WTL-timeline-manager-dark-mode');
-				const themeText = document.getElementById('themeText');
-				themeText.textContent = this.checked ? 'Dark' : 'Light';
-			});
-		</script>
-	</body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wesnoth Timeline - Offline</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #162447 0%, #1f4068 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .offline-container {
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #e43f5a;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #e43f5a;
+        }
+        button {
+            background: #e43f5a;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ff2e63;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="icon">⚠️</div>
+        <h1>You're Offline</h1>
+        <p>The Wesnoth Timeline requires an internet connection to load content. Please check your connection and try again.</p>
+        <button onclick="window.location.reload()">Retry</button>
+    </div>
+</body>
 </html>
