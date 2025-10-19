@@ -27,6 +27,149 @@ const WTLPushManager = {
         return true;
     },
     
+    // Show permission prompt
+    showPermissionPrompt() {
+        if (!this.isSupported) {
+            return;
+        }
+        
+        // Only show prompt if permission hasn't been decided yet
+        if (this.permissionState === 'default') {
+            console.log('Showing notification permission prompt');
+            
+            // Show a gentle prompt to encourage enabling notifications
+            this.showLocalAlert(
+                this.getTranslation('notification_prompt_title') || 'Stay Updated',
+                this.getTranslation('notification_prompt_message') || 'Get notified about new timeline events and updates',
+                [
+                    {
+                        text: this.getTranslation('notification_prompt_enable') || 'Enable',
+                        action: () => this.requestPermission()
+                    },
+                    {
+                        text: this.getTranslation('notification_prompt_later') || 'Later',
+                        action: () => console.log('User deferred notification permission')
+                    }
+                ]
+            );
+        }
+    },
+    
+    // Enhanced showLocalAlert with support for multiple buttons
+    showLocalAlert(title, message, buttons = [{ text: 'OK', action: null }]) {
+        // Remove any existing alerts first
+        const existingAlert = document.querySelector('.WTL-timeline-manager-local-alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        // Create a simple modal alert
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'WTL-timeline-manager-local-alert';
+        
+        let buttonsHTML = '';
+        buttons.forEach(button => {
+            buttonsHTML += `<button class="WTL-timeline-manager-alert-btn" data-action="${button.action ? 'has-action' : ''}">${button.text}</button>`;
+        });
+        
+        alertDiv.innerHTML = `
+            <div class="WTL-timeline-manager-alert-content">
+                <h4>${title}</h4>
+                <p>${message}</p>
+                <div class="WTL-timeline-manager-alert-buttons">${buttonsHTML}</div>
+            </div>
+        `;
+
+        // Add styles if not already added
+        if (!document.querySelector('#local-alert-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'local-alert-styles';
+            styles.textContent = `
+                .WTL-timeline-manager-local-alert {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease-out;
+                }
+                
+                .WTL-timeline-manager-alert-content {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    max-width: 300px;
+                    width: 90%;
+                    text-align: center;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                }
+                
+                .WTL-timeline-manager-alert-content h4 {
+                    margin: 0 0 10px 0;
+                    color: #333;
+                }
+                
+                .WTL-timeline-manager-alert-content p {
+                    margin: 0 0 20px 0;
+                    color: #666;
+                    line-height: 1.4;
+                }
+                
+                .WTL-timeline-manager-alert-buttons {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: center;
+                }
+                
+                .WTL-timeline-manager-alert-btn {
+                    background: var(--WTL-timeline-manager-primary-color, #4a90e2);
+                    color: white;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    flex: 1;
+                }
+                
+                .WTL-timeline-manager-alert-btn:hover {
+                    background: var(--WTL-timeline-manager-primary-hover, #357ae8);
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+        
+        document.body.appendChild(alertDiv);
+        
+        // Add click handlers to buttons
+        const buttonElements = alertDiv.querySelectorAll('.WTL-timeline-manager-alert-btn');
+        buttonElements.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                if (buttons[index].action) {
+                    buttons[index].action();
+                }
+                alertDiv.remove();
+            });
+        });
+        
+        // Auto-remove after 10 seconds if no action
+        setTimeout(() => {
+            if (alertDiv.parentElement) {
+                alertDiv.remove();
+            }
+        }, 10000);
+    },
+    
     // Request notification permission
     async requestPermission() {
         if (!this.isSupported) {
@@ -122,103 +265,6 @@ const WTLPushManager = {
         }
     },
     
-    // Show local alert (fallback when notifications are disabled)
-    showLocalAlert(title, message) {
-        // Remove any existing alerts first
-        const existingAlert = document.querySelector('.WTL-timeline-manager-local-alert');
-        if (existingAlert) {
-            existingAlert.remove();
-        }
-        
-        // Create a simple modal alert
-        const alertDiv = document.createElement('div');
-        alertDiv.className = 'WTL-timeline-manager-local-alert';
-        alertDiv.innerHTML = `
-            <div class="WTL-timeline-manager-alert-content">
-                <h4>${title}</h4>
-                <p>${message}</p>
-                <button class="WTL-timeline-manager-alert-btn">OK</button>
-            </div>
-        `;
-        
-        // Add styles if not already added
-        if (!document.querySelector('#local-alert-styles')) {
-            const styles = document.createElement('style');
-            styles.id = 'local-alert-styles';
-            styles.textContent = `
-                .WTL-timeline-manager-local-alert {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.5);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 10000;
-                    animation: fadeIn 0.3s ease-out;
-                }
-                
-                .WTL-timeline-manager-alert-content {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    max-width: 300px;
-                    width: 90%;
-                    text-align: center;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-                }
-                
-                .WTL-timeline-manager-alert-content h4 {
-                    margin: 0 0 10px 0;
-                    color: #333;
-                }
-                
-                .WTL-timeline-manager-alert-content p {
-                    margin: 0 0 20px 0;
-                    color: #666;
-                    line-height: 1.4;
-                }
-                
-                .WTL-timeline-manager-alert-btn {
-                    background: var(--WTL-timeline-manager-primary-color, #4a90e2);
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 14px;
-                }
-                
-                .WTL-timeline-manager-alert-btn:hover {
-                    background: var(--WTL-timeline-manager-primary-hover, #357ae8);
-                }
-                
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-            `;
-            document.head.appendChild(styles);
-        }
-        
-        document.body.appendChild(alertDiv);
-        
-        // Add click handler to close button
-        const closeBtn = alertDiv.querySelector('.WTL-timeline-manager-alert-btn');
-        closeBtn.addEventListener('click', () => {
-            alertDiv.remove();
-        });
-        
-        // Auto-remove after 5 seconds
-        setTimeout(() => {
-            if (alertDiv.parentElement) {
-                alertDiv.remove();
-            }
-        }, 5000);
-    },
-    
     // Update UI based on permission state
     updateUIState(state) {
         const notificationToggle = document.getElementById('notificationToggle');
@@ -293,15 +339,15 @@ const WTLPushManager = {
     // Show timeline update notification
     async showTimelineUpdate(newEventsCount = 1) {
         const title = this.getTranslation('notification_update_title') || 'Timeline Updated';
-        const body = this.getTranslation('notification_update_body') || 'New historical events have been added to the timeline.';
+        const body = this.getTranslation('notification_update_body') || 'New historical content is available';
         
         return await this.showNotification(title, body);
     },
     
     // Show daily digest
     async showDailyDigest() {
-        const title = this.getTranslation('notification_digest_title') || 'Wesnoth History Digest';
-        const body = this.getTranslation('notification_digest_body') || 'Explore today\'s featured events from Wesnoth history.';
+        const title = this.getTranslation('notification_digest_title') || 'Wesnoth Digest';
+        const body = this.getTranslation('notification_digest_body') || 'Check out today\'s featured historical events';
         
         return await this.showNotification(title, body, {
             requireInteraction: true
