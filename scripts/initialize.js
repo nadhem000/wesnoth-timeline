@@ -12,13 +12,13 @@ async function initializePage() {
     if (savedLanguage) {
         currentLanguage = savedLanguage;
         document.getElementById('languageSelect').value = currentLanguage;
-	}
+    }
     
     if (savedTheme) {
         currentTheme = savedTheme;
         document.getElementById('themeToggle').checked = (currentTheme === 'dark');
         updateTheme();
-	}
+    }
     
     // Initialize filters
     initializeFilters();
@@ -54,20 +54,24 @@ async function initializePage() {
     addNotificationControls();
     
     // FIXED: Only show permission prompt after Push Manager is fully initialized
-    if (WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
+    // and only if user hasn't made a choice recently
+    const promptDeferred = localStorage.getItem('wesnothNotificationPromptDeferred');
+    if (WTLPushManager.isSupported && 
+        WTLPushManager.permissionState === 'default' && 
+        !promptDeferred) {
         setTimeout(() => {
-			if (WTLPushManager && typeof WTLPushManager.showPermissionPrompt === 'function' && 
-				WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
-				WTLPushManager.showPermissionPrompt();
-			}
-		}, 3000);
-	}
+            if (WTLPushManager && typeof WTLPushManager.showPermissionPrompt === 'function' && 
+                WTLPushManager.isSupported && WTLPushManager.permissionState === 'default') {
+                WTLPushManager.showPermissionPrompt();
+            }
+        }, 3000);
+    }
     
     // Add highlight event listeners
     setTimeout(() => {
         console.log('Setting up highlight listeners...');
         addHighlightEventListeners();
-	}, 500);
+    }, 500);
     
     // Initialize sync features
     initializeSyncFeatures();
@@ -106,14 +110,14 @@ async function toggleNotifications() {
     
     if (toggle.checked) {
         // Enable notifications
-        const success = await WTLPushManager.requestPermission();
+        const success = await WTLPushManager.enableNotifications();
         if (!success) {
             toggle.checked = false;
-		}
-		} else {
+        }
+    } else {
         // Disable notifications
         await WTLPushManager.disableNotifications();
-	}
+    }
 }
 
 async function testNotification() {
@@ -477,5 +481,27 @@ function addEventListeners() {
     addSyncButton();
 }
 
+// Listen for updates from service worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data && event.data.type === 'DATA_UPDATED') {
+            console.log('Data updated from background sync:', event.data);
+            showSyncNotification('Timeline data updated in background');
+            
+            // Reload the updated data if it's timeline data
+            if (event.data.file.includes('timeline-data.js') || event.data.file.includes('lang/')) {
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            }
+        }
+        
+        // Handle update notifications from service worker
+        if (event.data && event.data.type === 'SHOW_UPDATE_NOTIFICATION') {
+            console.log('Showing update notification:', event.data);
+            WTLPushManager.showTimelineUpdate(event.data.files.length);
+        }
+    });
+}
 // Initialiser la page lorsque le DOM est chargé
 document.addEventListener('DOMContentLoaded', initializePage);

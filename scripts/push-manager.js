@@ -1,6 +1,8 @@
 const WTLPushManager = {
+    
     permissionState: null,
     isSupported: false,
+    notificationsEnabled: false,
     
     // Initialize push notifications
     async init() {
@@ -17,6 +19,11 @@ const WTLPushManager = {
         
         // Check current permission state
         this.permissionState = Notification.permission;
+        
+        // Load user preference from localStorage
+        const userPreference = localStorage.getItem('wesnothNotificationsEnabled');
+        this.notificationsEnabled = userPreference === 'true' && this.permissionState === 'granted';
+        
         this.updateUIState(this.permissionState);
         
         // If already granted, we're good to go
@@ -33,8 +40,8 @@ const WTLPushManager = {
             return;
         }
         
-        // Only show prompt if permission hasn't been decided yet
-        if (this.permissionState === 'default') {
+        // Only show prompt if permission hasn't been decided yet and user hasn't disabled
+        if (this.permissionState === 'default' && this.notificationsEnabled !== false) {
             console.log('Showing notification permission prompt');
             
             // Show a gentle prompt to encourage enabling notifications
@@ -48,126 +55,18 @@ const WTLPushManager = {
                     },
                     {
                         text: this.getTranslation('notification_prompt_later') || 'Later',
-                        action: () => console.log('User deferred notification permission')
+                        action: () => {
+                            console.log('User deferred notification permission');
+                            // Remember user choice for a while
+                            localStorage.setItem('wesnothNotificationPromptDeferred', 'true');
+                            setTimeout(() => {
+                                localStorage.removeItem('wesnothNotificationPromptDeferred');
+                            }, 7 * 24 * 60 * 60 * 1000); // 7 days
+                        }
                     }
                 ]
             );
         }
-    },
-    
-    // Enhanced showLocalAlert with support for multiple buttons
-    showLocalAlert(title, message, buttons = [{ text: 'OK', action: null }]) {
-        // Remove any existing alerts first
-        const existingAlert = document.querySelector('.WTL-timeline-manager-local-alert');
-        if (existingAlert) {
-            existingAlert.remove();
-        }
-
-        // Create a simple modal alert
-        const alertDiv = document.createElement('div');
-        alertDiv.className = 'WTL-timeline-manager-local-alert';
-        
-        let buttonsHTML = '';
-        buttons.forEach(button => {
-            buttonsHTML += `<button class="WTL-timeline-manager-alert-btn" data-action="${button.action ? 'has-action' : ''}">${button.text}</button>`;
-        });
-        
-        alertDiv.innerHTML = `
-            <div class="WTL-timeline-manager-alert-content">
-                <h4>${title}</h4>
-                <p>${message}</p>
-                <div class="WTL-timeline-manager-alert-buttons">${buttonsHTML}</div>
-            </div>
-        `;
-
-        // Add styles if not already added
-        if (!document.querySelector('#local-alert-styles')) {
-            const styles = document.createElement('style');
-            styles.id = 'local-alert-styles';
-            styles.textContent = `
-                .WTL-timeline-manager-local-alert {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.5);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 10000;
-                    animation: fadeIn 0.3s ease-out;
-                }
-                
-                .WTL-timeline-manager-alert-content {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    max-width: 300px;
-                    width: 90%;
-                    text-align: center;
-                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-                }
-                
-                .WTL-timeline-manager-alert-content h4 {
-                    margin: 0 0 10px 0;
-                    color: #333;
-                }
-                
-                .WTL-timeline-manager-alert-content p {
-                    margin: 0 0 20px 0;
-                    color: #666;
-                    line-height: 1.4;
-                }
-                
-                .WTL-timeline-manager-alert-buttons {
-                    display: flex;
-                    gap: 10px;
-                    justify-content: center;
-                }
-                
-                .WTL-timeline-manager-alert-btn {
-                    background: var(--WTL-timeline-manager-primary-color, #4a90e2);
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    flex: 1;
-                }
-                
-                .WTL-timeline-manager-alert-btn:hover {
-                    background: var(--WTL-timeline-manager-primary-hover, #357ae8);
-                }
-                
-                @keyframes fadeIn {
-                    from { opacity: 0; }
-                    to { opacity: 1; }
-                }
-            `;
-            document.head.appendChild(styles);
-        }
-        
-        document.body.appendChild(alertDiv);
-        
-        // Add click handlers to buttons
-        const buttonElements = alertDiv.querySelectorAll('.WTL-timeline-manager-alert-btn');
-        buttonElements.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                if (buttons[index].action) {
-                    buttons[index].action();
-                }
-                alertDiv.remove();
-            });
-        });
-        
-        // Auto-remove after 10 seconds if no action
-        setTimeout(() => {
-            if (alertDiv.parentElement) {
-                alertDiv.remove();
-            }
-        }, 10000);
     },
     
     // Request notification permission
@@ -182,10 +81,11 @@ const WTLPushManager = {
             
             const permission = await Notification.requestPermission();
             this.permissionState = permission;
-            this.updateUIState(permission);
             
             if (permission === 'granted') {
                 console.log('Notification permission granted');
+                this.notificationsEnabled = true;
+                localStorage.setItem('wesnothNotificationsEnabled', 'true');
                 
                 // Show welcome notification through service worker
                 this.showNotification(
@@ -193,9 +93,13 @@ const WTLPushManager = {
                     'You will now receive updates about timeline changes and new content.'
                 );
                 
+                this.updateUIState(permission);
                 return true;
             } else {
                 console.log('Notification permission denied:', permission);
+                this.notificationsEnabled = false;
+                localStorage.setItem('wesnothNotificationsEnabled', 'false');
+                this.updateUIState(permission);
                 this.showLocalAlert('Permission Denied', 'You need to allow notifications to receive alerts.');
                 return false;
             }
@@ -208,14 +112,33 @@ const WTLPushManager = {
     
     // Disable notifications
     async disableNotifications() {
-        this.permissionState = 'default';
-        this.updateUIState('default');
+        this.notificationsEnabled = false;
+        localStorage.setItem('wesnothNotificationsEnabled', 'false');
+        this.updateUIState(this.permissionState);
         this.showLocalAlert('Notifications Disabled', 'You will no longer receive notification alerts.');
         return true;
     },
     
+    // Enable notifications
+    async enableNotifications() {
+        if (this.permissionState === 'granted') {
+            this.notificationsEnabled = true;
+            localStorage.setItem('wesnothNotificationsEnabled', 'true');
+            this.updateUIState(this.permissionState);
+            return true;
+        } else {
+            return await this.requestPermission();
+        }
+    },
+    
     // Show notification using service worker
     async showNotification(title, body, options = {}) {
+        // Check if notifications are enabled by user
+        if (!this.notificationsEnabled) {
+            console.log('Notifications disabled by user');
+            return false;
+        }
+        
         if (!this.isSupported || this.permissionState !== 'granted') {
             console.log('Cannot show notification: permission not granted or not supported');
             return false;
@@ -265,18 +188,25 @@ const WTLPushManager = {
         }
     },
     
-    // Update UI based on permission state
+    // Update UI based on permission state and user preference
     updateUIState(state) {
         const notificationToggle = document.getElementById('notificationToggle');
         const notificationStatus = document.getElementById('notificationStatus');
         
         if (!notificationToggle || !notificationStatus) return;
         
+        // Set toggle based on user preference, not just permission
+        notificationToggle.checked = this.notificationsEnabled;
+        
         switch (state) {
             case 'granted':
-                notificationToggle.checked = true;
-                notificationStatus.textContent = this.getTranslation('notifications_enabled') || 'Enabled';
-                notificationStatus.className = 'WTL-timeline-manager-notification-status enabled';
+                if (this.notificationsEnabled) {
+                    notificationStatus.textContent = this.getTranslation('notifications_enabled') || 'Enabled';
+                    notificationStatus.className = 'WTL-timeline-manager-notification-status enabled';
+                } else {
+                    notificationStatus.textContent = this.getTranslation('notifications_disabled') || 'Disabled';
+                    notificationStatus.className = 'WTL-timeline-manager-notification-status disabled';
+                }
                 break;
                 
             case 'denied':

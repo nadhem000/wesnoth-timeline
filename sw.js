@@ -1,6 +1,6 @@
 // Service Worker for Wesnoth Timeline PWA
-const CACHE_NAME = 'wesnoth-timeline-v1.3.8'; // Updated version
-const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v8';
+const CACHE_NAME = 'wesnoth-timeline-v1.3.9'; // Updated version
+const SYNC_CACHE_NAME = 'wesnoth-timeline-sync-v9';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -172,6 +172,7 @@ async function syncTimelineData() {
         
         // Open sync cache
         const syncCache = await caches.open(SYNC_CACHE_NAME);
+        const updatedFiles = [];
         
         // List of data files that might need updating
         const dataFiles = [
@@ -196,6 +197,7 @@ async function syncTimelineData() {
                         networkResponse.headers.get('last-modified') !== cachedResponse.headers.get('last-modified')) {
                         
                         console.log('Updating cached file:', fileUrl);
+                        updatedFiles.push(fileUrl);
                         
                         // Update sync cache
                         await syncCache.put(fileUrl, networkResponse.clone());
@@ -218,6 +220,11 @@ async function syncTimelineData() {
             } catch (error) {
                 console.log('Failed to sync file:', fileUrl, error);
             }
+        }
+        
+        // Show notification if files were updated
+        if (updatedFiles.length > 0) {
+            await showUpdateNotification(updatedFiles);
         }
         
         console.log('Background sync completed');
@@ -264,3 +271,28 @@ self.addEventListener('message', event => {
         );
     }
 });
+async function showUpdateNotification(updatedFiles) {
+    try {
+        const clients = await self.clients.matchAll();
+        if (clients.length > 0) {
+            // Send message to clients instead of showing notification directly
+            clients.forEach(client => {
+                client.postMessage({
+                    type: 'SHOW_UPDATE_NOTIFICATION',
+                    files: updatedFiles,
+                    timestamp: new Date().toISOString()
+                });
+            });
+        } else {
+            // If no clients are open, show notification directly
+            const registration = await self.registration;
+            await registration.showNotification('Wesnoth Timeline Updated', {
+                body: `${updatedFiles.length} files have been updated.`,
+                icon: '/assets/icons/pwa-icons/icon-192x192.png',
+                tag: 'timeline-update'
+            });
+        }
+    } catch (error) {
+        console.log('Failed to show update notification:', error);
+    }
+}
